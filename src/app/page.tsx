@@ -1,5 +1,7 @@
 "use client";
 
+import Leadership from "@/components/leadership";
+import OurPartner from "@/components/sections/ourpartner";
 import PortfolioStats from "@/components/sections/portofolio";
 import SolutionsHero from "@/components/sections/solution/solutionHero";
 import SolutionsList from "@/components/sections/solution/solutionList";
@@ -43,6 +45,8 @@ export default function HomePage() {
         </div>
       </section>
       <PortfolioStats />
+      <Leadership />
+      <OurPartner />
       <SolutionsHero />
       <SolutionsList />
 

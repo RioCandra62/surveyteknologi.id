@@ -2,13 +2,18 @@
 import Footer from "@/components/layout/Footer";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-// import Footer from "@/components/layout/Footer";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
 
 export const metadata = {
-  title: "Survey Teknologi Indonesia",
+  title: "Survey Teknologi Indonesia | Drone Mapping & LiDAR Solutions",
   description:
-    "Advanced drone mapping and survey solutions using LiDAR, photogrammetry, and bathymetry.",
-
+    "Advanced drone mapping and survey solutions using LiDAR, photogrammetry, bathymetry, and SLAM technologies.",
 };
 
 export default function RootLayout({
@@ -17,13 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="">
+    <html lang="en" className={plusJakartaSans.variable}>
+      <body className="bg-dark-bg font-sans antialiased text-gray-200">
         <Navbar />
-        {children}
-        {/* <Footer /> */}
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
   );
 }
+

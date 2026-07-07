@@ -6,9 +6,11 @@ interface Partner {
 }
 
 const partners: Partner[] = [
-  { name: "Vale", logo: "/assets/image/partner_logo/vale.png" },
-  { name: "PLN ES", logo: "/assets/image/partner_logo/plnes.png" },
+
   { name: "Antam", logo: "/assets/image/partner_logo/antam.png" },
+  { name: "PLN ES", logo: "/assets/image/partner_logo/plnes.png" },
+
+  { name: "Vale", logo: "/assets/image/partner_logo/vale.png" },
   { name: "Surveyor Indonesia", logo: "/assets/image/partner_logo/si.png" },
   {
     name: "Bintang Raya Inti Bumi",

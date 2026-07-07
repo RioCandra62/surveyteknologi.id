@@ -38,7 +38,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Solutions", href: "/#solutions" },
     { name: "About Us", href: "/#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -100,13 +100,13 @@ export default function Navbar() {
               )}
             </button>
 
-            <a
-              href="#contact"
+            <Link
+              href="/contact"
               className="inline-flex items-center gap-1.5 rounded-full bg-brand-cyan px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white hover:bg-brand-cyan/90 transition-all duration-300 shadow-[0_0_15px_rgba(0,163,224,0.2)] hover:shadow-[0_0_20px_rgba(0,163,224,0.4)]"
             >
               Get in Touch
               <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Actions (Menu + Theme toggle) */}
@@ -164,14 +164,14 @@ export default function Navbar() {
             </a>
           ))}
           <div className="pt-4 border-t border-white/5 light:border-slate-200">
-            <a
-              href="#contact"
+            <Link
+              href="/contact"
               onClick={() => setIsOpen(false)}
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-cyan py-3 text-sm font-semibold uppercase tracking-wider text-white hover:bg-brand-cyan/90 transition-all duration-200"
             >
               Get in Touch
               <ArrowUpRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

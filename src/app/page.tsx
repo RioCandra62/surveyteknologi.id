@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Leadership from "@/components/leadership";
 import OurPartner from "@/components/sections/ourpartner";
 import PortfolioStats from "@/components/sections/portofolio";
@@ -100,12 +101,12 @@ export default function HomePage() {
             >
               Explore Solutions
             </a>
-            <a
-              href="#contact"
+            <Link
+              href="/contact"
               className="px-8 py-4 border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-all duration-300 backdrop-blur-sm hover:-translate-y-0.5 text-sm uppercase tracking-wider"
             >
               Contact Us
-            </a>
+            </Link>
           </div>
         </div>
 

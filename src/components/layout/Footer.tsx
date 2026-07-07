@@ -131,13 +131,13 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <Phone className="h-4 w-4 text-amber-500" />
               <span className="text-sm hover:text-white transition-colors duration-200 cursor-pointer">
-                +62 812 3456 7890
+                +62 811 5064 378
               </span>
             </div>
             <div className="flex items-start gap-3">
               <MapPin className="h-4 w-4 text-amber-500 mt-1 shrink-0" />
               <span className="text-sm leading-relaxed">
-                Jakarta, Indonesia
+                Makassar, Indonesia
               </span>
             </div>
 

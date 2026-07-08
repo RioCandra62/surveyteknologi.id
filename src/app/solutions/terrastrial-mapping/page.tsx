@@ -1,109 +1,112 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  Layers, 
-  Cpu, 
-  Navigation, 
-  Eye, 
-  CheckCircle2, 
-  ArrowLeft, 
-  ArrowUpRight, 
-  Compass, 
-  Zap, 
-  Settings, 
-  ShieldAlert 
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Compass, Layers, Zap } from "lucide-react";
 
-export default function LidarSolutionPage() {
-  const conceptualPillars = [
-    {
-      icon: <Zap className="h-6 w-6 text-brand-cyan" />,
-      title: "Active Laser Pulse",
-      desc: "Emits up to 240,000 laser pulses per second, measuring the time-of-flight of reflected light to calculate distances with millimeter precision."
-    },
-    {
-      icon: <Navigation className="h-6 w-6 text-brand-cyan" />,
-      title: "RTK GNSS Positioning",
-      desc: "Integrates with dual-antenna satellite receivers to establish georeferenced coordinates for every single data point in real-time."
-    },
-    {
-      icon: <Cpu className="h-6 w-6 text-brand-cyan" />,
-      title: "High-Accuracy IMU",
-      desc: "A built-in Inertial Measurement Unit continuously monitors drone roll, pitch, and yaw, correcting laser vector directions during flight."
-    }
+export default function TerrestrialMappingSolutionPage() {
+  const specs = [
+    { label: "Angular Accuracy", value: '2" (Arc Seconds)' },
+    { label: "Reflectorless Range", value: "Up to 1000m" },
+    { label: "RTK Precision", value: "H: 8mm / V: 15mm" },
+    { label: "Tilt Compensation", value: "IMU Tilt up to 60°" },
   ];
 
-  const specs = [
-    { label: "System Accuracy", value: "Sub-5 cm Vertical" },
-    { label: "Points Per Second", value: "240k (Single Return)" },
-    { label: "Reflective Range", value: "250m @ 10% reflectivity" },
-    { label: "Penetration Level", value: "Up to 5 Target Returns" },
+  const conceptualPillars = [
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "Total Station Traverses",
+      desc: "Measures precise horizontal and vertical angles along closed traverses to compute local benchmark positions with sub-millimeter relative accuracy.",
+    },
+    {
+      icon: <Compass className="h-6 w-6 text-brand-cyan" />,
+      title: "RTK GNSS Positioning",
+      desc: "Links multi-constellation base and rover receivers to receive real-time positioning signals, defining absolute geodetic coordinates on site.",
+    },
+    {
+      icon: <CheckCircle2 className="h-6 w-6 text-brand-cyan" />,
+      title: "Precision Boundary Staking",
+      desc: "Extracts coordinates directly from engineering CAD designs and places physical markers on site to define alignments and borders.",
+    },
   ];
 
   const deliverables = [
     {
       id: "del-01",
-      title: "3D Classified Point Cloud",
-      desc: "A dense cloud of georeferenced 3D coordinates, color-coded and classified into ground, high vegetation, medium vegetation, and artificial structures. Ideal for calculating tree canopy heights and engineering profiles.",
-      image: "/assets/image/lidar/classified_pointcloud.png",
-      tags: ["XYZ Coordinates", "LAS / LAZ Format"],
-      hudCode: "POINTS: 240k/s // CLASSIFIED: TRUE // FORMAT: .LAS",
+      title: "Boundary Layout Survey",
+      desc: "High-precision boundary lines and property stakes defining cadastral borders. Crucial for land acquisitions, zoning compliance, and legal property divisions.",
+      image: "/assets/image/photogrammetry.png",
+      tags: ["CAD Drawings", "DXF / DWG Format"],
+      hudCode: "STAKES: 48 // ACCURACY: <1.5cm // REF: BPN_INDONESIA",
       specs: [
-        { name: "Point Density", value: "240+ pts/m² (Multiple returns)" },
-        { name: "Return Echoes", value: "Up to 5 Target Returns" },
-        { name: "Vertical Accuracy", value: "± 3 cm RMSE" },
-        { name: "Output Format", value: "LAS / LAZ, E57, XYZ ASCII" },
+        { name: "Cadastral Standards", value: "BPN (Badan Pertanahan Nasional) Compliant" },
+        { name: "Marker Material", value: "Iron pins, concrete pillars (patok)" },
+        { name: "Output Format", value: "AutoCAD DWG, Shapefile SHP, PDF Maps" },
+        { name: "Applications", value: "Zoning boundaries, legal land registries" },
       ],
     },
     {
       id: "del-02",
-      title: "Digital Terrain Model (DTM)",
-      desc: "A bare-earth elevation model showing the actual ground surface after software filters out all canopy, bushes, and man-made features. Vital for geological surveys, pipeline routing, and site grading.",
-      image: "/assets/image/lidar/dsm.jpeg",
-      tags: ["Bare-Earth", "GIS Raster / GeoTIFF"],
-      hudCode: "GRID: 0.5m x 0.5m // VERT_ACC: 3.8cm // GEOTIFF",
+      title: "Topographic CAD Drawings",
+      desc: "CAD engineering drawings detailing ground contours, terrain elevations, existing utilities, roads, structures, and trees. Plugs directly into civil grading designs.",
+      image: "/assets/image/bathymetry.png",
+      tags: ["CAD Contours", "DWG / DXF Format"],
+      hudCode: "CONTOUR_INT: 0.5m // GRID: 5m // TARGET: SITE_CIVIL",
       specs: [
-        { name: "Cell Size", value: "0.25m to 1.0m grid cells" },
-        { name: "Vegetation Filtering", value: "Advanced Multi-echo penetration" },
-        { name: "Contour Compatibility", value: "Direct contours generation" },
-        { name: "Data Format", value: "GeoTIFF, XYZ ASCII, ASCII Grid" },
+        { name: "Contour Interval", value: "0.2m, 0.5m, 1.0m intervals" },
+        { name: "Feature Coding", value: "Full CAD coding for utilities and trees" },
+        { name: "Data Format", value: "AutoCAD Civil 3D DWG, DXF, LandXML" },
+        { name: "Elevation Reference", value: "CORS Reference / MSL (Mean Sea Level)" },
       ],
     },
     {
       id: "del-03",
-      title: "Digital Surface Model (DSM)",
-      desc: "A model capturing the highest elevation points of all features on the surface, including canopy tops, power lines, and building roofs. Essential for urban line-of-sight reviews and canopy height maps.",
-      image: "/assets/image/lidar/DSM.jpg",
-      tags: ["Top Surface", "Height Map"],
-      hudCode: "DSM_GRID: 0.5m // CANOPY: TRUE // FORMAT: .TIF",
+      title: "As-Built Verification Surveys",
+      desc: "Compares actual constructed positions (walls, columns, grids, pipelines) against architectural design blueprints to ensure layout and tolerance compliance.",
+      image: "/assets/image/photogrammetry.png",
+      tags: ["PDF Report", "CAD Deviations"],
+      hudCode: "COLUMNS: 32 // MAX_DEV: 8mm // STATUS: COMPLIANT",
       specs: [
-        { name: "Feature Capture", value: "Includes buildings, canopy, transmission lines" },
-        { name: "Vertical Precision", value: "Sub-5 cm accuracy" },
-        { name: "Horizontal GSD", value: "1.5 cm visual raster output" },
-        { name: "Compatibility", value: "ArcGIS, QGIS, Global Mapper" },
+        { name: "Verification Type", value: "Concrete columns verticality, floor levels" },
+        { name: "Tolerance Auditing", value: "Structural misalignment reporting" },
+        { name: "Reports Format", value: "Excel coordinate lists, color-coded CAD files" },
+        { name: "Turnaround Time", value: "Inspected and reported in 24 hours" },
       ],
     },
     {
       id: "del-04",
-      title: "Topographic Contours",
-      desc: "High-precision CAD-ready elevation contour lines generated at detailed intervals (e.g., 0.5m to 1m) for engineering design and drainage planning. Directly imported into AutoCAD or Civil 3D.",
-      image: "/assets/image/lidar/topolines.jpg",
-      tags: ["CAD Contours", "DXF / DWG Format"],
-      hudCode: "CONTOUR_INT: 0.5m // FILE: .DWG/.DXF // V_ACC: 3cm",
+      title: "Coordinate Staking Report",
+      desc: "Detailed report lists showing targeted stakes vs actual coordinates and structural deviations, validating layout compliance on site.",
+      image: "/assets/image/bathymetry.png",
+      tags: ["Excel CSV", "PDF Report"],
+      hudCode: "POINTS: 120 // STATUS: VALIDATED // ERROR: <10mm",
       specs: [
-        { name: "Contour Interval", value: "0.2m, 0.5m, 1.0m customizable" },
-        { name: "Geometry Type", value: "2D & 3D Polyline CAD assets" },
-        { name: "Software Compatibility", value: "AutoCAD Civil 3D, Bentley MicroStation" },
-        { name: "Precision Class", value: "Engineering Grade Topography" },
+        { name: "Staking Method", value: "Total Station reflectorless / GNSS rover" },
+        { name: "Validation", value: "Double-tie measurements verified" },
+        { name: "Output Reports", value: "Excel CSV coordinate table, PDF layout" },
+        { name: "Accuracy Level", value: "Engineering layout grade" },
       ],
     },
   ];
 
   const useCases = [
-    { sector: "Mining & Volumetrics", use: "Stockpile volume estimation, structural slope stability monitoring, and rapid pit excavation mapping." },
-    { sector: "Infrastructure & Roads", use: "Corridor mapping for roads, railways, and bridges, providing structural cross-sections and terrain profiles." },
-    { sector: "Forestry & Carbon", use: "Biomass estimation, canopy height metrics, forest inventory tracking, and environmental monitoring." },
-    { sector: "Power Line Inspection", use: "Clearance analysis between power conductors and surrounding vegetation to identify immediate hazards." }
+    {
+      sector: "Land Cadastral",
+      use: "Defining legal property boundaries for registration, disputes resolution, and land subdivisions.",
+    },
+    {
+      sector: "Foundation Layout",
+      use: "Staking out concrete piles, structural grids, and columns coordinates on construction sites.",
+    },
+    {
+      sector: "Road Construction",
+      use: "Staking alignment centerline profiles, cross-sections, and grading slope markers.",
+    },
+    {
+      sector: "Grading Progress",
+      use: "Computing soil volume changes between survey intervals during land clearance and site grading.",
+    },
   ];
 
   return (
@@ -111,16 +114,12 @@ export default function LidarSolutionPage() {
       
       {/* Telemetry Header/Hero */}
       <section className="relative py-24 border-b border-white/5 light:border-slate-200 overflow-hidden">
-        
-        {/* Subtle grid background */}
         <div className="absolute inset-0 bg-tech-grid opacity-35 pointer-events-none" />
-        
-        {/* Glow blob */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-brand-cyan/5 rounded-full filter blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Breadcrumbs & Navigation Back */}
+          {/* Breadcrumbs */}
           <div className="flex items-center gap-2 mb-8">
             <Link 
               href="/" 
@@ -131,29 +130,29 @@ export default function LidarSolutionPage() {
             <span className="text-xs text-gray-600">/</span>
             <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">Solutions</span>
             <span className="text-xs text-gray-600">/</span>
-            <span className="text-xs text-gray-400 light:text-slate-500">LiDAR</span>
+            <span className="text-xs text-gray-400 light:text-slate-500">Terrestrial Mapping</span>
           </div>
 
-          {/* Telemetry HUD display line */}
+          {/* HUD Status line */}
           <div className="hidden md:flex justify-between items-center text-[9px] font-mono text-gray-500 uppercase tracking-widest mb-6 border-b border-white/5 light:border-slate-200 pb-2">
-            <span>SYS: ACQUISITION_STAGE // SENSOR_LINK: STANDBY</span>
-            <span>HDG: 000° N // LAT: -6.2088 // LNG: 106.8456</span>
+            <span>SYS: TERRESTRIAL_SURVEY // STATUS: NOMINAL</span>
+            <span>GRID: CORS_BIG // LAT: -5.1400 // LNG: 119.4215</span>
           </div>
 
           <div className="max-w-4xl">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              LiDAR Remote Sensing
+              Geodetic Land Surveying
             </span>
 
             <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-              Airborne LiDAR Survey <br />
+              Terrestrial Mapping <br />
               <span className="bg-gradient-to-r from-brand-cyan via-sky-400 to-brand-blue bg-clip-text text-transparent">
-                & Mapping Solutions
+                & Geodetic Survey Solutions
               </span>
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-gray-300 light:text-slate-700 leading-relaxed font-light max-w-3xl">
-              Survey Teknologi Indonesia delivers survey-grade, actionable geospatial datasets using drone-mounted LiDAR sensors, mapping dense canopies and bare-earth terrain models with high efficiency.
+              Delivering millimeter-level geodetic control and site layout coordinates using reflectorless electronic total stations and multi-constellation RTK GNSS receivers.
             </p>
           </div>
 
@@ -176,25 +175,23 @@ export default function LidarSolutionPage() {
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
-            {/* Description (Left) */}
             <div className="lg:col-span-6 space-y-6">
               <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
                 Technology Overview
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                How Drone LiDAR Works
+                Traditional & Modern Geodetic Surveys
               </h2>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                LiDAR (Light Detection and Ranging) is an active remote sensing technology that projects rapid laser pulses toward the ground. By measuring the precise return times of these pulses, combined with GNSS (GPS) coordinate data and Inertial Measurement Unit (IMU) pitch and roll calculations, we generate high-density, centimeter-accurate 3D maps of both the ground and surface assets.
+                Terrestrial mapping is the foundation of civil construction and legal zoning audits. By deploying electronic total stations to measure precise optical vectors, and geodetic RTK GPS rovers to resolve multi-constellation satellites, we anchor physical boundaries with georeferenced benchmarks.
               </p>
               <div className="border-l-2 border-brand-cyan/30 pl-4 py-1">
                 <p className="text-sm italic text-gray-300 light:text-slate-700">
-                  Unlike traditional photogrammetry, LiDAR does not rely on visual matching or daylight, meaning we can scan shadows, forested canopies, and narrow vertical assets with unmatched reliability.
+                  All benchmarks are referenced directly to the CORS BIG (Badan Informasi Geospasial) satellite stations link, ensuring compliance with legalPertanahan (BPN) standards.
                 </p>
               </div>
             </div>
 
-            {/* Concept cards (Right) */}
             <div className="lg:col-span-6 space-y-6">
               {conceptualPillars.map((item, idx) => (
                 <div 
@@ -221,79 +218,6 @@ export default function LidarSolutionPage() {
         </div>
       </section>
 
-      {/* Canopy Penetration Highlights */}
-      <section className="py-20 bg-gradient-to-r from-brand-blue/10 via-[#070b12] light:via-slate-100/50 to-brand-blue/10 border-y border-white/5 light:border-slate-200 relative overflow-hidden transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Visual Graphic Representation (Left) */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-[380px] p-6 rounded-2xl border border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white backdrop-blur-sm shadow-2xl light:shadow-sm">
-                {/* Tech brackets */}
-                <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-brand-cyan/40" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-brand-cyan/40" />
-                
-                <h4 className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-6">
-                  CANOPY RETURN METRICS
-                </h4>
-
-                <div className="space-y-4">
-                  {/* Return 1 */}
-                  <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-[#10b981]">
-                    <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">RETURN #1 // 0.00μs</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Top of Tree Canopy</p>
-                    </div>
-                    <span className="text-[10px] bg-[#10b981]/15 text-[#10b981] px-2 py-0.5 rounded font-mono">100%</span>
-                  </div>
-
-                  {/* Return 2 */}
-                  <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-[#3b82f6]">
-                    <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">RETURN #2 // 0.05μs</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Understory & Branches</p>
-                    </div>
-                    <span className="text-[10px] bg-[#3b82f6]/15 text-[#3b82f6] px-2 py-0.5 rounded font-mono">42%</span>
-                  </div>
-
-                  {/* Return Last */}
-                  <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-brand-cyan">
-                    <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">LAST RETURN // 0.12μs</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Bare ground surface (DTM)</p>
-                    </div>
-                    <span className="text-[10px] bg-brand-cyan/15 text-brand-cyan px-2 py-0.5 rounded font-mono">12%</span>
-                  </div>
-                </div>
-
-                <p className="mt-6 text-[10px] text-gray-500 text-center leading-relaxed">
-                  Multiple returns filter vegetation cover, enabling the extraction of bare-earth contours.
-                </p>
-              </div>
-            </div>
-
-            {/* Content (Right) */}
-            <div className="lg:col-span-7 space-y-6">
-              <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-                Core Competency
-              </span>
-              <h3 className="text-2xl md:text-3xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                Filtering Vegetation with Multi-Return Tech
-              </h3>
-              <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                One of the greatest advantages of LiDAR is its ability to penetrate vegetation. When a laser beam is fired, it does not stop at the first leaf. A single pulse can return multiple reflections as it hits gaps in the canopy, filters down through the branches, and finally bounces off the actual ground. 
-              </p>
-              <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                By processing these **multiple returns**, we strip away tree cover and bushes in post-processing, revealing the true ground level. This makes LiDAR the only viable surveying method for forested terrain, highway corridors, and mineral deposits covered in heavy foliage.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
       {/* Equipment Section */}
       <section className="py-24 bg-[#090d16] light:bg-slate-50 relative overflow-hidden transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -303,53 +227,53 @@ export default function LidarSolutionPage() {
               Industrial Hardware
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              Enterprise Survey Equipment
+              Geodetic Survey Instruments
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              We operate top-tier hardware to guarantee centimeter-level precision and data integrity.
+              We operate geodetic total stations and visual tilt-compensated base/rover receiver stations.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             
-            {/* Drone Platform Card */}
+            {/* Total Station Card */}
             <div className="group border border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white hover:bg-[#0c1221] light:hover:bg-white/80 hover:border-brand-cyan/20 p-8 rounded-2xl transition-all duration-300 flex flex-col relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
               
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">01</div>
-              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">DJI Matrice 400 RTK Platform</h3>
+              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">Efix TS Total Station</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                Our heavy-lift enterprise drone system. Designed for harsh surveying conditions, it features an IP56 weather rating, advanced obstacle avoidance sensors, and dual-battery hot-swapping for continuous operation. Equipped with integrated RTK GNSS systems, it ensures ultra-accurate aerial coordinates.
+                Our high-precision optical mapping total station. Offers reflectorless distance measurements up to 1000 meters and 2 arc-seconds angular accuracy, making it ideal for column grids layout and civil engineering audits.
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block">Flight Time</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Up to 60 minutes</span>
+                  <span className="text-gray-500 block">Angular Accuracy</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">2 Arc Seconds</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">IP Rating</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">IP56 Weather Resistant</span>
+                  <span className="text-gray-500 block">Measuring Mode</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Reflectorless laser alignment</span>
                 </div>
               </div>
             </div>
 
-            {/* Sensor Payload Card */}
+            {/* GNSS Receivers Card */}
             <div className="group border border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white hover:bg-[#0c1221] light:hover:bg-white/80 hover:border-brand-cyan/20 p-8 rounded-2xl transition-all duration-300 flex flex-col relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
               
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">02</div>
-              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">DJI Zenmuse L3 Sensor</h3>
+              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">Efix F7+ / F8 GNSS Receivers</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                A state-of-the-art LiDAR payload integrating an airborne scanner, high-precision self-developed IMU, and a 4/5-inch CMOS frame mapping camera. The L3 offers vertical accuracy of 3 cm, multiple target return returns (up to 5), and a scanning target range of 300 meters.
+                Multi-constellation RTK base and rover sets. Equipped with IMU tilt compensation (up to 60° tilt) and camera AR visual staking (F8 model), enabling fast and precise topographic coordination in rugged environments.
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block">Vertical Accuracy</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">3 cm (Survey Grade)</span>
+                  <span className="text-gray-500 block">RTK Precision</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">H: 8mm / V: 15mm</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">Target Detection Range</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">300m @ 10% Reflectivity</span>
+                  <span className="text-gray-500 block">Tilt Sensor</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">IMU active tilt survey</span>
                 </div>
               </div>
             </div>
@@ -368,10 +292,10 @@ export default function LidarSolutionPage() {
               Output Products
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              LiDAR Survey Deliverables
+              Terrestrial Deliverables
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              Kami memproses data point cloud LiDAR presisi tinggi menjadi produk pemetaan spasial detail yang siap diintegrasikan.
+              Kami menyerahkan laporan koordinat, peta kontur AutoCAD, dan as-built drawing standar konstruksi.
             </p>
           </div>
 
@@ -385,11 +309,9 @@ export default function LidarSolutionPage() {
                     isEven ? "" : "lg:flex-row-reverse"
                   }`}
                 >
-                  {/* Left Side: Image Visual with Tech HUD styling */}
                   <div className="w-full lg:w-1/2">
                     <div className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden border border-white/10 light:border-slate-200 shadow-2xl light:shadow-md">
                       
-                      {/* Image */}
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -398,12 +320,10 @@ export default function LidarSolutionPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#090d16]/70 light:from-white/70 via-transparent to-transparent pointer-events-none" />
 
-                      {/* Tech Bracket HUD overlay */}
                       <div className="absolute inset-3 border border-white/5 light:border-slate-900/5 pointer-events-none" />
                       <div className="absolute top-5 left-5 w-4 h-4 border-t border-l border-brand-cyan/60 pointer-events-none" />
                       <div className="absolute bottom-5 right-5 w-4 h-4 border-b border-r border-brand-cyan/60 pointer-events-none" />
                       
-                      {/* Floating tag pills */}
                       <div className="absolute top-5 right-5 flex flex-wrap gap-2">
                         {item.tags.map((tag, tIdx) => (
                           <span key={tIdx} className="bg-dark-bg/85 backdrop-blur-md border border-white/10 px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider text-gray-300 uppercase">
@@ -412,7 +332,6 @@ export default function LidarSolutionPage() {
                         ))}
                       </div>
 
-                      {/* HUD Metadata Spec Label */}
                       <div className="absolute bottom-5 left-5 right-5 flex justify-between items-center bg-[#090d16]/80 backdrop-blur-sm border border-white/5 px-3 py-2 rounded-lg text-[9px] font-mono text-gray-400">
                         <span>{item.hudCode}</span>
                         <span className="text-brand-cyan font-bold">READY</span>
@@ -421,7 +340,6 @@ export default function LidarSolutionPage() {
                     </div>
                   </div>
 
-                  {/* Right Side: Detailed Descriptions & Param Grid */}
                   <div className="w-full lg:w-1/2 space-y-6">
                     <div className="space-y-2">
                       <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase">
@@ -436,7 +354,6 @@ export default function LidarSolutionPage() {
                       {item.desc}
                     </p>
 
-                    {/* Specification list */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/5 light:border-slate-200">
                       {item.specs.map((spec, specIdx) => (
                         <div key={specIdx} className="flex gap-2.5 items-start">
@@ -455,7 +372,6 @@ export default function LidarSolutionPage() {
                       ))}
                     </div>
 
-                    {/* Button link */}
                     <div className="pt-6">
                       <Link
                         href="/contact"
@@ -483,10 +399,10 @@ export default function LidarSolutionPage() {
               Sectors served
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              LiDAR Industry Applications
+              Terrestrial Industry Applications
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              Serving various high-precision sectors in Indonesia with specialized geospatial workflows.
+              Applying optical and geodetic measurements to support construction, subdivisions, and civil setups.
             </p>
           </div>
 
@@ -514,11 +430,9 @@ export default function LidarSolutionPage() {
         </div>
       </section>
 
-      {/* Call to Action Banner */}
+      {/* Call to Action */}
       <section className="py-20 relative overflow-hidden border-t border-white/5 light:border-slate-200 transition-colors">
         <div className="absolute inset-0 bg-tech-grid opacity-20 pointer-events-none" />
-        
-        {/* Glow */}
         <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-brand-blue/5 rounded-full filter blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
@@ -528,7 +442,7 @@ export default function LidarSolutionPage() {
           </span>
 
           <h2 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-            Ready to Map Your Project Site?
+            Ready to Layout Your Site Coordinates?
           </h2>
 
           <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">

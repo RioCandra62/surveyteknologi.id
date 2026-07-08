@@ -54,6 +54,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/our-fleet"
+                  className="text-sm hover:text-white transition-colors duration-200"
+                >
+                  Our Fleet
+                </Link>
+              </li>
+              <li>
                 <a
                   href="#about"
                   className="text-sm hover:text-white transition-colors duration-200"
@@ -144,7 +152,8 @@ export default function Footer() {
             {/* Social icons */}
             <div className="flex space-x-4 pt-4">
               <a
-                href="#"
+              target="_blank"
+                href="https://www.linkedin.com/in/survey-teknologi-indonesia-9bba32317/"
                 className="rounded-full border border-white/5 bg-white/5 p-2 text-gray-400 hover:text-white hover:border-amber-500/30 transition-all duration-200 flex items-center justify-center"
                 aria-label="LinkedIn"
               >
@@ -161,7 +170,6 @@ export default function Footer() {
                 className="rounded-full border border-white/5 bg-white/5 p-2 text-gray-400 hover:text-white hover:border-amber-500/30 transition-all duration-200 flex items-center justify-center"
                 aria-label="Website"
               >
-                <Globe className="h-4 w-4" />
               </a>
             </div>
           </div>

@@ -1,109 +1,112 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  Layers, 
-  Cpu, 
-  Navigation, 
-  Eye, 
-  CheckCircle2, 
-  ArrowLeft, 
-  ArrowUpRight, 
-  Compass, 
-  Zap, 
-  Settings, 
-  ShieldAlert 
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Camera, Layers, Focus, Maximize2 } from "lucide-react";
 
-export default function LidarSolutionPage() {
-  const conceptualPillars = [
-    {
-      icon: <Zap className="h-6 w-6 text-brand-cyan" />,
-      title: "Active Laser Pulse",
-      desc: "Emits up to 240,000 laser pulses per second, measuring the time-of-flight of reflected light to calculate distances with millimeter precision."
-    },
-    {
-      icon: <Navigation className="h-6 w-6 text-brand-cyan" />,
-      title: "RTK GNSS Positioning",
-      desc: "Integrates with dual-antenna satellite receivers to establish georeferenced coordinates for every single data point in real-time."
-    },
-    {
-      icon: <Cpu className="h-6 w-6 text-brand-cyan" />,
-      title: "High-Accuracy IMU",
-      desc: "A built-in Inertial Measurement Unit continuously monitors drone roll, pitch, and yaw, correcting laser vector directions during flight."
-    }
+export default function PhotogrammetrySolutionPage() {
+  const specs = [
+    { label: "Resolution (GSD)", value: "Sub-1.0 cm / pixel" },
+    { label: "Camera Sensor", value: "45 MP Full-Frame" },
+    { label: "Horizontal Accuracy", value: "1.5 cm RMSE" },
+    { label: "Vertical Accuracy", value: "3.0 cm RMSE" },
   ];
 
-  const specs = [
-    { label: "System Accuracy", value: "Sub-5 cm Vertical" },
-    { label: "Points Per Second", value: "240k (Single Return)" },
-    { label: "Reflective Range", value: "250m @ 10% reflectivity" },
-    { label: "Penetration Level", value: "Up to 5 Target Returns" },
+  const conceptualPillars = [
+    {
+      icon: <Camera className="h-6 w-6 text-brand-cyan" />,
+      title: "High-Overlap Image Acquisition",
+      desc: "Missions are planned using automated flight control software, capturing continuous nadir or oblique frames with 80% frontal and 75% lateral overlaps to prevent visual gaps.",
+    },
+    {
+      icon: <Focus className="h-6 w-6 text-brand-cyan" />,
+      title: "Ground Control Points (GCPs)",
+      desc: "High-contrast visual targets are surveyed on the ground using geodetic RTK GNSS receivers. These coordinates anchor the photogrammetric pixel grids to absolute global coordinates.",
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "Structure-from-Motion (SfM)",
+      desc: "Photogrammetry software matches hundreds of common keypoints across overlapping photos. Triangulation calculations reconstruct the exact camera geometry and 3D shapes.",
+    },
   ];
 
   const deliverables = [
     {
       id: "del-01",
-      title: "3D Classified Point Cloud",
-      desc: "A dense cloud of georeferenced 3D coordinates, color-coded and classified into ground, high vegetation, medium vegetation, and artificial structures. Ideal for calculating tree canopy heights and engineering profiles.",
-      image: "/assets/image/lidar/classified_pointcloud.png",
-      tags: ["XYZ Coordinates", "LAS / LAZ Format"],
-      hudCode: "POINTS: 240k/s // CLASSIFIED: TRUE // FORMAT: .LAS",
+      title: "2D High-Resolution Orthomosaic Map",
+      desc: "A georeferenced, orthorectified two-dimensional visual map compiled from thousands of high-overlap aerial photographs. Corrects lens distortions and topographic reliefs to yield absolute mapping precision at sub-centimeter resolutions.",
+      image: "/assets/image/photogrammetry/ortho.png",
+      tags: ["GeoTIFF / TIF", "GIS-Ready"],
+      hudCode: "GSD: 0.6 cm/px // FILE: .TIF // PROJ: UTM_50S",
       specs: [
-        { name: "Point Density", value: "240+ pts/m² (Multiple returns)" },
-        { name: "Return Echoes", value: "Up to 5 Target Returns" },
-        { name: "Vertical Accuracy", value: "± 3 cm RMSE" },
-        { name: "Output Format", value: "LAS / LAZ, E57, XYZ ASCII" },
+        { name: "Ground Resolution", value: "Sub-1 cm / pixel (GSD)" },
+        { name: "Coordinate System", value: "UTM / WGS 84 (Georeferenced)" },
+        { name: "Precision Level", value: "± 2 cm Horizontal Accuracy" },
+        { name: "Software Formats", value: "GeoTIFF, KML/KMZ, ECW" },
       ],
     },
     {
       id: "del-02",
-      title: "Digital Terrain Model (DTM)",
-      desc: "A bare-earth elevation model showing the actual ground surface after software filters out all canopy, bushes, and man-made features. Vital for geological surveys, pipeline routing, and site grading.",
-      image: "/assets/image/lidar/dsm.jpeg",
-      tags: ["Bare-Earth", "GIS Raster / GeoTIFF"],
-      hudCode: "GRID: 0.5m x 0.5m // VERT_ACC: 3.8cm // GEOTIFF",
+      title: "Digital Elevation Models (DEM/DTM/DSM)",
+      desc: "Digital elevation representations detailing terrain profiles and contours. Post-processing software filters out canopy and man-made structures to construct bare-earth models (DTM) or keeps them to analyze top-surface profiles (DSM) for hydrology and drainage planning.",
+      image: "/assets/image/bathymetry.png",
+      tags: ["DEM Raster", "Contour Ready"],
+      hudCode: "GRID: 1m x 1m // CONTOUR: 0.5m // VERT_ACC: 3cm",
       specs: [
-        { name: "Cell Size", value: "0.25m to 1.0m grid cells" },
-        { name: "Vegetation Filtering", value: "Advanced Multi-echo penetration" },
-        { name: "Contour Compatibility", value: "Direct contours generation" },
-        { name: "Data Format", value: "GeoTIFF, XYZ ASCII, ASCII Grid" },
+        { name: "Contour Interval", value: "0.25m to 1.0m (CAD Ready)" },
+        { name: "Elevation Model", value: "DSM (Top Surface) & DTM (Bare Earth)" },
+        { name: "Data Format", value: "GeoTIFF Raster, XYZ ASCII, DWG/DXF" },
+        { name: "Applications", value: "Civil Engineering, Cut & Fill, Drainage" },
       ],
     },
     {
       id: "del-03",
-      title: "Digital Surface Model (DSM)",
-      desc: "A model capturing the highest elevation points of all features on the surface, including canopy tops, power lines, and building roofs. Essential for urban line-of-sight reviews and canopy height maps.",
-      image: "/assets/image/lidar/DSM.jpg",
-      tags: ["Top Surface", "Height Map"],
-      hudCode: "DSM_GRID: 0.5m // CANOPY: TRUE // FORMAT: .TIF",
+      title: "3D Textured Mesh Models",
+      desc: "High-fidelity photorealistic 3D mesh models detailing terrain conditions and vertical structural features. Ideal for interactive spatial visual reviews, mine site digital twins, and BIM (Building Information Modeling) pipelines.",
+      image: "/assets/image/photogrammetry.png",
+      tags: ["OBJ / FBX", "3D Tiles"],
+      hudCode: "POLY_COUNT: 12.8M // TEXTURE: 8K // COMPAT: CAD/BIM",
       specs: [
-        { name: "Feature Capture", value: "Includes buildings, canopy, transmission lines" },
-        { name: "Vertical Precision", value: "Sub-5 cm accuracy" },
-        { name: "Horizontal GSD", value: "1.5 cm visual raster output" },
-        { name: "Compatibility", value: "ArcGIS, QGIS, Global Mapper" },
+        { name: "Visual Quality", value: "Photorealistic 8K Textures" },
+        { name: "Polygon Density", value: "High-Density Triangulated Mesh" },
+        { name: "Industry Standard", value: "OBJ, FBX, 3D Tiles, Cesium" },
+        { name: "Applications", value: "Digital Twins, Virtual Walkthroughs" },
       ],
     },
     {
       id: "del-04",
-      title: "Topographic Contours",
-      desc: "High-precision CAD-ready elevation contour lines generated at detailed intervals (e.g., 0.5m to 1m) for engineering design and drainage planning. Directly imported into AutoCAD or Civil 3D.",
-      image: "/assets/image/lidar/topolines.jpg",
-      tags: ["CAD Contours", "DXF / DWG Format"],
-      hudCode: "CONTOUR_INT: 0.5m // FILE: .DWG/.DXF // V_ACC: 3cm",
+      title: "Volumetric Stockpile Calculations",
+      desc: "High-precision bulk material stockpile volume computations (coal, ore, aggregates, earthworks) measured directly from 3D textured mesh surfaces. Delivers absolute inventory metrics and volumetric audits within hours.",
+      image: "/assets/image/bathymetry.png",
+      tags: ["CSV / PDF", "Volumetrics"],
+      hudCode: "VOL_ACCURACY: >98.5% // DATUM: BASEPLANE // COMP: 3D",
       specs: [
-        { name: "Contour Interval", value: "0.2m, 0.5m, 1.0m customizable" },
-        { name: "Geometry Type", value: "2D & 3D Polyline CAD assets" },
-        { name: "Software Compatibility", value: "AutoCAD Civil 3D, Bentley MicroStation" },
-        { name: "Precision Class", value: "Engineering Grade Topography" },
+        { name: "Volume Accuracy", value: ">98.5% Volumetric Precision" },
+        { name: "Calculation Method", value: "Base-plane Triangulated Volume" },
+        { name: "Output Reports", value: "PDF Report, CSV coordinates, Cross-sections" },
+        { name: "Turnaround Time", value: "Fast post-processing (Sub-24 hours)" },
       ],
     },
   ];
 
   const useCases = [
-    { sector: "Mining & Volumetrics", use: "Stockpile volume estimation, structural slope stability monitoring, and rapid pit excavation mapping." },
-    { sector: "Infrastructure & Roads", use: "Corridor mapping for roads, railways, and bridges, providing structural cross-sections and terrain profiles." },
-    { sector: "Forestry & Carbon", use: "Biomass estimation, canopy height metrics, forest inventory tracking, and environmental monitoring." },
-    { sector: "Power Line Inspection", use: "Clearance analysis between power conductors and surrounding vegetation to identify immediate hazards." }
+    {
+      sector: "Open-Cut Mining",
+      use: "Stockpile volume calculations, boundaries layout, and mapping of quarry faces for structural geology reviews.",
+    },
+    {
+      sector: "Precision Agriculture",
+      use: "Tree crop counts, crop health mapping using NDVI sensors, and plantation boundary management.",
+    },
+    {
+      sector: "Civil & Construction",
+      use: "Land grading layout, road design reviews, volume calculations of cut-and-fill soil mass.",
+    },
+    {
+      sector: "Cadastral & Land Planning",
+      use: "Detailed visual boundaries layout for land ownership validation and cadastral mapping databases.",
+    },
   ];
 
   return (
@@ -131,29 +134,29 @@ export default function LidarSolutionPage() {
             <span className="text-xs text-gray-600">/</span>
             <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">Solutions</span>
             <span className="text-xs text-gray-600">/</span>
-            <span className="text-xs text-gray-400 light:text-slate-500">LiDAR</span>
+            <span className="text-xs text-gray-400 light:text-slate-500">Photogrammetry</span>
           </div>
 
           {/* Telemetry HUD display line */}
           <div className="hidden md:flex justify-between items-center text-[9px] font-mono text-gray-500 uppercase tracking-widest mb-6 border-b border-white/5 light:border-slate-200 pb-2">
-            <span>SYS: ACQUISITION_STAGE // SENSOR_LINK: STANDBY</span>
-            <span>HDG: 000° N // LAT: -6.2088 // LNG: 106.8456</span>
+            <span>SYS: PHOTO_ACQUISITION // STATUS: NOMINAL</span>
+            <span>HDG: 090° E // LAT: -5.1400 // LNG: 119.4215</span>
           </div>
 
           <div className="max-w-4xl">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              LiDAR Remote Sensing
+              Optical Remote Sensing
             </span>
 
             <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-              Airborne LiDAR Survey <br />
+              Drone Photogrammetry <br />
               <span className="bg-gradient-to-r from-brand-cyan via-sky-400 to-brand-blue bg-clip-text text-transparent">
-                & Mapping Solutions
+                & Orthomosaic Mapping
               </span>
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-gray-300 light:text-slate-700 leading-relaxed font-light max-w-3xl">
-              Survey Teknologi Indonesia delivers survey-grade, actionable geospatial datasets using drone-mounted LiDAR sensors, mapping dense canopies and bare-earth terrain models with high efficiency.
+              Survey Teknologi Indonesia captures sub-centimeter resolution aerial photos and converts them into georeferenced orthomosaics, digital elevation models, and high-fidelity 3D meshes for civil engineering and mining.
             </p>
           </div>
 
@@ -182,14 +185,14 @@ export default function LidarSolutionPage() {
                 Technology Overview
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                How Drone LiDAR Works
+                How Drone Photogrammetry Works
               </h2>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                LiDAR (Light Detection and Ranging) is an active remote sensing technology that projects rapid laser pulses toward the ground. By measuring the precise return times of these pulses, combined with GNSS (GPS) coordinate data and Inertial Measurement Unit (IMU) pitch and roll calculations, we generate high-density, centimeter-accurate 3D maps of both the ground and surface assets.
+                Photogrammetry is the science of extracting geometric measurements from overlapping photographs. By flying a drone along structured grid flight lines and capturing hundreds of high-resolution visual frames, we compile datasets where each pixel is georeferenced. Using triangulation calculations and camera calibration parameters, photogrammetry software reconstructs detailed 3D models.
               </p>
               <div className="border-l-2 border-brand-cyan/30 pl-4 py-1">
                 <p className="text-sm italic text-gray-300 light:text-slate-700">
-                  Unlike traditional photogrammetry, LiDAR does not rely on visual matching or daylight, meaning we can scan shadows, forested canopies, and narrow vertical assets with unmatched reliability.
+                  Unlike LiDAR which maps elevations beneath vegetation, photogrammetry captures color-realistic visual maps (orthomosaics) and textured surfaces, rendering highly detailed visible features.
                 </p>
               </div>
             </div>
@@ -221,7 +224,7 @@ export default function LidarSolutionPage() {
         </div>
       </section>
 
-      {/* Canopy Penetration Highlights */}
+      {/* Overlap & Ground Sampling Distance (GSD) highlights */}
       <section className="py-20 bg-gradient-to-r from-brand-blue/10 via-[#070b12] light:via-slate-100/50 to-brand-blue/10 border-y border-white/5 light:border-slate-200 relative overflow-hidden transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -235,40 +238,40 @@ export default function LidarSolutionPage() {
                 <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-brand-cyan/40" />
                 
                 <h4 className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-6">
-                  CANOPY RETURN METRICS
+                  GSD & FLIGHT SPECIFICATIONS
                 </h4>
 
                 <div className="space-y-4">
-                  {/* Return 1 */}
+                  {/* Altitude 50m */}
                   <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-[#10b981]">
                     <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">RETURN #1 // 0.00μs</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Top of Tree Canopy</p>
+                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">ALTITUDE // 50m AGL</span>
+                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Ground Resolution (GSD)</p>
                     </div>
-                    <span className="text-[10px] bg-[#10b981]/15 text-[#10b981] px-2 py-0.5 rounded font-mono">100%</span>
+                    <span className="text-[10px] bg-[#10b981]/15 text-[#10b981] px-2 py-0.5 rounded font-mono">0.6 cm/px</span>
                   </div>
 
-                  {/* Return 2 */}
+                  {/* Altitude 100m */}
                   <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-[#3b82f6]">
                     <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">RETURN #2 // 0.05μs</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Understory & Branches</p>
+                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">ALTITUDE // 100m AGL</span>
+                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Ground Resolution (GSD)</p>
                     </div>
-                    <span className="text-[10px] bg-[#3b82f6]/15 text-[#3b82f6] px-2 py-0.5 rounded font-mono">42%</span>
+                    <span className="text-[10px] bg-[#3b82f6]/15 text-[#3b82f6] px-2 py-0.5 rounded font-mono">1.2 cm/px</span>
                   </div>
 
-                  {/* Return Last */}
+                  {/* Overlap */}
                   <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-brand-cyan">
                     <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">LAST RETURN // 0.12μs</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Bare ground surface (DTM)</p>
+                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">IMAGE OVERLAP RATES</span>
+                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Frontal / Side overlap ratios</p>
                     </div>
-                    <span className="text-[10px] bg-brand-cyan/15 text-brand-cyan px-2 py-0.5 rounded font-mono">12%</span>
+                    <span className="text-[10px] bg-brand-cyan/15 text-brand-cyan px-2 py-0.5 rounded font-mono">80% / 75%</span>
                   </div>
                 </div>
 
                 <p className="mt-6 text-[10px] text-gray-500 text-center leading-relaxed">
-                  Multiple returns filter vegetation cover, enabling the extraction of bare-earth contours.
+                  Higher overlaps and lower altitudes yield ultra-dense pixel maps with sub-centimeter GSD resolutions.
                 </p>
               </div>
             </div>
@@ -279,13 +282,13 @@ export default function LidarSolutionPage() {
                 Core Competency
               </span>
               <h3 className="text-2xl md:text-3xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                Filtering Vegetation with Multi-Return Tech
+                Resolving Features with Sub-Centimeter GSD
               </h3>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                One of the greatest advantages of LiDAR is its ability to penetrate vegetation. When a laser beam is fired, it does not stop at the first leaf. A single pulse can return multiple reflections as it hits gaps in the canopy, filters down through the branches, and finally bounces off the actual ground. 
+                Ground Sampling Distance (GSD) defines the physical size of one image pixel on the ground. A GSD of 1 cm/pixel means that one pixel in our map represents 1 square centimeter of actual space. This high resolution lets us capture minute cracking on asphalt, structural features in mining, and pipeline layouts that satellite imagery cannot resolve.
               </p>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                By processing these **multiple returns**, we strip away tree cover and bushes in post-processing, revealing the true ground level. This makes LiDAR the only viable surveying method for forested terrain, highway corridors, and mineral deposits covered in heavy foliage.
+                By pairing high-resolution full-frame cameras with geodetic RTK GPS systems, we coordinate each image shutter release. This provides highly accurate geospatial databases that integrate into engineering CAD designs and GIS layers.
               </p>
             </div>
 
@@ -303,53 +306,53 @@ export default function LidarSolutionPage() {
               Industrial Hardware
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              Enterprise Survey Equipment
+              Enterprise Mapping Fleet
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              We operate top-tier hardware to guarantee centimeter-level precision and data integrity.
+              We operate specialized, high-resolution enterprise drones equipped with mechanical global shutter cameras.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             
-            {/* Drone Platform Card */}
+            {/* Drone Platform Card 1 */}
             <div className="group border border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white hover:bg-[#0c1221] light:hover:bg-white/80 hover:border-brand-cyan/20 p-8 rounded-2xl transition-all duration-300 flex flex-col relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
               
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">01</div>
-              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">DJI Matrice 400 RTK Platform</h3>
+              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">DJI Matrice 4 Enterprise</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                Our heavy-lift enterprise drone system. Designed for harsh surveying conditions, it features an IP56 weather rating, advanced obstacle avoidance sensors, and dual-battery hot-swapping for continuous operation. Equipped with integrated RTK GNSS systems, it ensures ultra-accurate aerial coordinates.
+                Our primary compact enterprise mapping drone. Designed for rapid deployment, it features a built-in mechanical shutter camera to completely prevent motion distortion when flying at high speeds. Equipped with an RTK module, it links to geodetic ground stations for centimeter-level coordinate accuracy.
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
                   <span className="text-gray-500 block">Flight Time</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Up to 60 minutes</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Up to 45 minutes</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">IP Rating</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">IP56 Weather Resistant</span>
+                  <span className="text-gray-500 block">Camera Shutter</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Mechanical Global Shutter</span>
                 </div>
               </div>
             </div>
 
-            {/* Sensor Payload Card */}
+            {/* Drone Platform Card 2 */}
             <div className="group border border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white hover:bg-[#0c1221] light:hover:bg-white/80 hover:border-brand-cyan/20 p-8 rounded-2xl transition-all duration-300 flex flex-col relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
               
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">02</div>
-              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">DJI Zenmuse L3 Sensor</h3>
+              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">DJI Matrice 350 / 400 RTK + Zenmuse P1</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                A state-of-the-art LiDAR payload integrating an airborne scanner, high-precision self-developed IMU, and a 4/5-inch CMOS frame mapping camera. The L3 offers vertical accuracy of 3 cm, multiple target return returns (up to 5), and a scanning target range of 300 meters.
+                Our heavy-lift workhorse setup for large-scale operations. The Zenmuse P1 payload integrates a 45-megapixel full-frame sensor on a 3-axis stabilized gimbal. Supporting multiple lens profiles (24mm, 35mm, 50mm), it delivers ultra-dense pixel maps for complex topographies.
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block">Vertical Accuracy</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">3 cm (Survey Grade)</span>
+                  <span className="text-gray-500 block">Camera Sensor</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">45 MP Full-Frame CMOS</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">Target Detection Range</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">300m @ 10% Reflectivity</span>
+                  <span className="text-gray-500 block">Smart Oblique Capture</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Supported (Multi-Angle)</span>
                 </div>
               </div>
             </div>
@@ -358,7 +361,6 @@ export default function LidarSolutionPage() {
 
         </div>
       </section>
-
       {/* Deliverables Section */}
       <section className="py-24 bg-gradient-to-b from-[#090d16] light:from-slate-50 to-[#05080e] light:to-white relative overflow-hidden transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -368,10 +370,10 @@ export default function LidarSolutionPage() {
               Output Products
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              LiDAR Survey Deliverables
+              Photogrammetry Deliverables
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              Kami memproses data point cloud LiDAR presisi tinggi menjadi produk pemetaan spasial detail yang siap diintegrasikan.
+              Kami memproses data foto udara tumpang-tindih (overlap) tinggi menjadi produk pemetaan spasial yang detail, presisi, dan siap diintegrasikan.
             </p>
           </div>
 
@@ -483,10 +485,10 @@ export default function LidarSolutionPage() {
               Sectors served
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              LiDAR Industry Applications
+              Photogrammetry Applications
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              Serving various high-precision sectors in Indonesia with specialized geospatial workflows.
+              Applying high-resolution drone mapping to solve critical inspection and volume computation tasks.
             </p>
           </div>
 

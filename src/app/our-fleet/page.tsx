@@ -14,6 +14,7 @@ interface FleetItem {
   image: string;
   specs: { label: string; value: string }[];
   description: string;
+  isUpcoming?: boolean;
 }
 
 export default function OurFleetPage() {
@@ -169,6 +170,22 @@ export default function OurFleetPage() {
       ],
       description: "High-resolution full-frame photogrammetry camera, built specifically for orthomosaic mapping, digital twins, and cadastral datasets.",
     },
+    {
+      id: "fleet-15",
+      name: "YellowScan Mapper Ultra",
+      category: "payload",
+      categoryLabel: "Sensors & Payloads",
+      filename: "yellowscan_mapper_ultra.png",
+      image: "https://cdn.geo-matching.com/1pAVN2Jo.png?w=1200&s=a8f2685da1dd1832dca3fe2e4f4dd298",
+      specs: [
+        { label: "Accuracy", value: "2.5 cm Precision" },
+        { label: "Laser Range", value: "Up to 640 m" },
+        { label: "Pulse Echoes", value: "Up to 7 returns" },
+        { label: "System Weight", value: "Lightweight UAV" },
+      ],
+      description: "High-precision UAV LiDAR system optimized for Beyond Visual Line of Sight (BVLOS) operations and corridor inspections. Features 7-echo technology for exceptional vegetation penetration.",
+      isUpcoming: true,
+    },
     // SLAM
     {
       id: "fleet-10",
@@ -249,12 +266,18 @@ export default function OurFleetPage() {
     },
   ];
 
-  const filteredItems = fleetItems.filter((item) => {
-    const matchesCategory = selectedCategory === "all" || item.category === selectedCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredItems = fleetItems
+    .filter((item) => {
+      const matchesCategory = selectedCategory === "all" || item.category === selectedCategory;
+      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      if (a.isUpcoming && !b.isUpcoming) return -1;
+      if (!a.isUpcoming && b.isUpcoming) return 1;
+      return 0;
+    });
 
   return (
     <div className="bg-[#090d16] light:bg-slate-50 min-h-screen text-gray-200 light:text-slate-700 transition-colors duration-300">
@@ -347,13 +370,24 @@ export default function OurFleetPage() {
               {filteredItems.map((item) => (
                 <div
                   key={item.id}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white p-6 shadow-xl hover:border-brand-cyan/20 hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_4px_30px_rgba(0,163,224,0.03)]"
+                  className={`group relative flex flex-col overflow-hidden rounded-2xl border p-6 shadow-xl hover:-translate-y-1 transition-all duration-300 ${
+                    item.isUpcoming
+                      ? "border-brand-cyan/30 light:border-brand-cyan/30 bg-gradient-to-b from-brand-cyan/[0.04] to-[#090d16]/30 light:from-brand-cyan/[0.02] light:to-white shadow-[0_0_30px_rgba(0,163,224,0.06)] hover:border-brand-cyan/50"
+                      : "border-white/5 light:border-slate-200 bg-white/[0.01] light:bg-white hover:border-brand-cyan/20 hover:shadow-[0_4px_30px_rgba(0,163,224,0.03)]"
+                  }`}
                 >
                   {/* Top highlight line */}
-                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className={`absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-cyan/40 to-transparent transition-opacity duration-500 ${
+                    item.isUpcoming ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  }`} />
                   
                   {/* Image Placeholder */}
                   <div className="relative h-44 w-full rounded-xl overflow-hidden border border-white/10 light:border-slate-200 bg-[#06090f] light:bg-slate-50 flex flex-col items-center justify-center p-4 text-center group/placeholder">
+                    {item.isUpcoming && (
+                      <span className="absolute top-3 right-3 z-20 px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30 backdrop-blur-sm">
+                        Upcoming
+                      </span>
+                    )}
                     <Image
                       src={item.image}
                       fill

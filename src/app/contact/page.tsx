@@ -15,6 +15,7 @@ export default function ContactPage() {
   });
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const servicesList = [
     { value: "lidar", label: "Airborne LiDAR Survey" },
@@ -32,8 +33,10 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage("");
     if (!formData.name || !formData.email || !formData.service) {
       setStatus("error");
+      setErrorMessage("Please complete all required fields (Name, Email, and Selection Service).");
       return;
     }
 
@@ -61,10 +64,12 @@ export default function ContactPage() {
         });
       } else {
         setStatus("error");
+        setErrorMessage(data.message || "Failed to send email. Please check your server SMTP configuration.");
       }
     } catch (error) {
       console.error("Error submitting contact form:", error);
       setStatus("error");
+      setErrorMessage("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -246,7 +251,7 @@ export default function ContactPage() {
 
                     {status === "error" && (
                       <div className="p-3 rounded-lg border border-red-500/25 bg-red-500/10 text-red-400 text-xs">
-                        Please complete all required fields (Name, Email, and Selection Service).
+                        {errorMessage || "Please complete all required fields (Name, Email, and Selection Service)."}
                       </div>
                     )}
 

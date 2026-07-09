@@ -34,23 +34,24 @@ export default function SlamSolutionPage() {
   const deliverables = [
     {
       id: "del-01",
-      title: "3D Georeferenced Point Cloud",
-      desc: "Detailed 3D laser coordinates mapping indoor rooms, tunnels, or stockpile silos. Essential for digital twins and architectural reviews.",
-      image: "/assets/image/photogrammetry.png",
-      tags: ["LAS / LAZ Format", "XYZ Cloud"],
-      hudCode: "POINTS: 650k/s // CLASSIFIED: TRUE // REF: UTM_50S",
+      title: "Airborne & SLAM Point Cloud Fusion",
+      desc: "A seamless, hybrid 3D dataset merging high-altitude UAV LiDAR scans with terrestrial handheld SLAM records. Eliminates spatial data gaps by combining roof canopies and outdoor topography with interior layouts and underground spaces into a single, unified coordinate system.",
+      image: "https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs12518-018-0221-7/MediaObjects/12518_2018_221_Fig4_HTML.png",
+      tags: ["Data Fusion", "Seamless 3D Model", "UAV + SLAM"],
+      hudCode: "FUSION: AIRBORNE + TERRESTRIAL // TIE-POINTS: ICP // ERROR: <2.5cm",
       specs: [
-        { name: "Density Class", value: "High-density local scans" },
-        { name: "Local Precision", value: "1-2 cm relative accuracy" },
-        { name: "Coverage Limits", value: "GPS-Denied indoor & underground" },
-        { name: "File Formats", value: "LAS, E57, PLY, XYZ ASCII" },
+        { name: "Airborne Sensor", value: "Zenmuse L2 / Zenmuse L3 UAV LiDAR" },
+        { name: "Terrestrial Sensor", value: "CHCNAV RS10 / Share S10 Handheld SLAM" },
+        { name: "Alignment Method", value: "RTK GNSS + Automated ICP Point Matching" },
+        { name: "Common Applications", value: "Industrial facilities, forestry canopy, BIM modeling" },
       ],
+      isFeatured: true,
     },
     {
       id: "del-02",
       title: "CAD Floor Plans & Layouts",
       desc: "CAD drawings mapping structural columns, walls, and boundary layouts, compiled directly from the SLAM scan coordinates.",
-      image: "/assets/image/bathymetry.png",
+      image: "https://i.pinimg.com/736x/7f/21/2f/7f212fe42fcfe5109746408d8fd6b872.jpg",
       tags: ["CAD Drawing", "DXF / DWG Format"],
       hudCode: "SCALE: 1:100 // FILE: .DWG // TARGET: AS-BUILT",
       specs: [
@@ -64,7 +65,7 @@ export default function SlamSolutionPage() {
       id: "del-03",
       title: "3D BIM Models (Revit)",
       desc: "Parametric 3D Revit models built directly from the SLAM scan coordinates. Speeds up building inspections and facility management.",
-      image: "/assets/image/photogrammetry.png",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMj5jy6HDDrV1YlCIa7bnPSlpGwPfeh0l7chf7HI6dbCEQ9abZvr5gBps&s=10  ",
       tags: ["Revit RVT", "BIM-Ready"],
       hudCode: "BIM_LOD: LOD 300 // FILE: .RVT // MODEL: 3D",
       specs: [
@@ -310,13 +311,18 @@ export default function SlamSolutionPage() {
                   }`}
                 >
                   <div className="w-full lg:w-1/2">
-                    <div className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden border border-white/10 light:border-slate-200 shadow-2xl light:shadow-md">
+                    <div className={`group relative h-80 sm:h-96 rounded-2xl overflow-hidden border shadow-2xl light:shadow-md transition-all duration-300 ${
+                      item.isFeatured 
+                        ? "border-brand-cyan/40 shadow-[0_0_30px_rgba(0,163,224,0.1)] scale-[1.01]" 
+                        : "border-white/10 light:border-slate-200"
+                    }`}>
                       
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        unoptimized
+                        className="object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#090d16]/70 light:from-white/70 via-transparent to-transparent pointer-events-none" />
 
@@ -342,8 +348,13 @@ export default function SlamSolutionPage() {
 
                   <div className="w-full lg:w-1/2 space-y-6">
                     <div className="space-y-2">
-                      <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase">
+                      <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase flex items-center gap-2">
                         DELIVERABLE 0{idx + 1}
+                        {item.isFeatured && (
+                          <span className="bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30 text-[8px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">
+                            Featured Fusion
+                          </span>
+                        )}
                       </span>
                       <h3 className="text-2xl md:text-3xl font-extrabold text-white light:text-slate-900 leading-tight">
                         {item.title}

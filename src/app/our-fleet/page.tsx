@@ -264,6 +264,22 @@ export default function OurFleetPage() {
       ],
       description: "Precision echo sounder payload designed to measure sub-surface water topography. Plugs into autonomous surface survey vessels.",
     },
+    {
+      id: "fleet-16",
+      name: "NORBIT Winghead X Multibeam Sonar",
+      category: "bathymetry",
+      categoryLabel: "Bathymetry",
+      filename: "norbit_iwbms.png",
+      image: "https://www.uniquegroup.com/wp-content/uploads/2023/02/B44.png",
+      specs: [
+        { label: "Frequency", value: "200 - 700 kHz Wideband" },
+        { label: "Depth Range", value: "0.2m to 275m" },
+        { label: "Number of Beams", value: "Up to 512 Beams" },
+        { label: "Roll/Pitch Accuracy", value: "0.02° Precision" },
+      ],
+      description: "Integrated Wideband Multibeam Sonar system featuring a high-end GNSS/INS inertial navigation system. Perfect for high-resolution shallow-water surveys, pipeline inspections, and harbor mapping.",
+      isUpcoming: true,
+    },
   ];
 
   const filteredItems = fleetItems
@@ -447,7 +463,7 @@ export default function OurFleetPage() {
           <Settings className="h-8 w-8 text-brand-cyan mx-auto animate-spin-slow" />
           <h3 className="text-xl font-bold text-white light:text-slate-900">Technical Calibration & Standards</h3>
           <p className="text-xs sm:text-sm text-gray-400 light:text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            Semua peralatan dalam armada kami dikalibrasi secara rutin oleh laboratorium terakreditasi sebelum dan sesudah deployment proyek. Penggunaan sensor RTK GNSS dikalibrasi secara langsung terhadap stasiun referensi CORS BIG (Badan Informasi Geospasial) untuk kepatuhan absolut standar pemetaan nasional Indonesia.
+            All equipment in our fleet is routinely calibrated by accredited laboratories before and after project deployment. The use of RTK GNSS sensors is calibrated directly against the BIG (Geospatial Information Agency) CORS reference station for absolute compliance with Indonesian national mapping standards.
           </p>
           <div className="pt-4 flex justify-center gap-6 text-[10px] text-gray-500 font-mono">
             <span className="flex items-center gap-1"><Shield className="h-3.5 w-3.5 text-brand-cyan" /> ISO 9001:2015</span>

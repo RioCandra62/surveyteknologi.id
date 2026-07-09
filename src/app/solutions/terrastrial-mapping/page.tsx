@@ -36,7 +36,7 @@ export default function TerrestrialMappingSolutionPage() {
       id: "del-01",
       title: "Boundary Layout Survey",
       desc: "High-precision boundary lines and property stakes defining cadastral borders. Crucial for land acquisitions, zoning compliance, and legal property divisions.",
-      image: "/assets/image/photogrammetry.png",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHcZDRFoPMGEeh47lAcMnQH7qUTXvNIX0OUEfD2IrLhjK-nCMeyJLqbA8&s=10",
       tags: ["CAD Drawings", "DXF / DWG Format"],
       hudCode: "STAKES: 48 // ACCURACY: <1.5cm // REF: BPN_INDONESIA",
       specs: [
@@ -50,7 +50,7 @@ export default function TerrestrialMappingSolutionPage() {
       id: "del-02",
       title: "Topographic CAD Drawings",
       desc: "CAD engineering drawings detailing ground contours, terrain elevations, existing utilities, roads, structures, and trees. Plugs directly into civil grading designs.",
-      image: "/assets/image/bathymetry.png",
+      image: "https://images.squarespace-cdn.com/content/v1/62814369091b2127fa485b70/4955b079-f72c-47bb-8a19-96c1776d5da7/topo+survey+drawing.PNG",
       tags: ["CAD Contours", "DWG / DXF Format"],
       hudCode: "CONTOUR_INT: 0.5m // GRID: 5m // TARGET: SITE_CIVIL",
       specs: [
@@ -60,25 +60,25 @@ export default function TerrestrialMappingSolutionPage() {
         { name: "Elevation Reference", value: "CORS Reference / MSL (Mean Sea Level)" },
       ],
     },
-    {
-      id: "del-03",
-      title: "As-Built Verification Surveys",
-      desc: "Compares actual constructed positions (walls, columns, grids, pipelines) against architectural design blueprints to ensure layout and tolerance compliance.",
-      image: "/assets/image/photogrammetry.png",
-      tags: ["PDF Report", "CAD Deviations"],
-      hudCode: "COLUMNS: 32 // MAX_DEV: 8mm // STATUS: COMPLIANT",
-      specs: [
-        { name: "Verification Type", value: "Concrete columns verticality, floor levels" },
-        { name: "Tolerance Auditing", value: "Structural misalignment reporting" },
-        { name: "Reports Format", value: "Excel coordinate lists, color-coded CAD files" },
-        { name: "Turnaround Time", value: "Inspected and reported in 24 hours" },
-      ],
-    },
+    // {
+    //   id: "del-03",
+    //   title: "As-Built Verification Surveys",
+    //   desc: "Compares actual constructed positions (walls, columns, grids, pipelines) against architectural design blueprints to ensure layout and tolerance compliance.",
+    //   image: "/assets/image/photogrammetry.png",
+    //   tags: ["PDF Report", "CAD Deviations"],
+    //   hudCode: "COLUMNS: 32 // MAX_DEV: 8mm // STATUS: COMPLIANT",
+    //   specs: [
+    //     { name: "Verification Type", value: "Concrete columns verticality, floor levels" },
+    //     { name: "Tolerance Auditing", value: "Structural misalignment reporting" },
+    //     { name: "Reports Format", value: "Excel coordinate lists, color-coded CAD files" },
+    //     { name: "Turnaround Time", value: "Inspected and reported in 24 hours" },
+    //   ],
+    // },
     {
       id: "del-04",
       title: "Coordinate Staking Report",
       desc: "Detailed report lists showing targeted stakes vs actual coordinates and structural deviations, validating layout compliance on site.",
-      image: "/assets/image/bathymetry.png",
+      image: "https://leica-geosystems.com/-/media/images/leicageosystems/products/gnss-systems/more/augmented-stake-out/leica-augmented-stakeout-stake_points5.png?sc_lang=en&hash=EFA6C585D16726F4822A0D49688F2EFA",
       tags: ["Excel CSV", "PDF Report"],
       hudCode: "POINTS: 120 // STATUS: VALIDATED // ERROR: <10mm",
       specs: [
@@ -316,7 +316,8 @@ export default function TerrestrialMappingSolutionPage() {
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        unoptimized
+                        className="object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#090d16]/70 light:from-white/70 via-transparent to-transparent pointer-events-none" />
 

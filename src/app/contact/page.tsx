@@ -303,40 +303,55 @@ export default function ContactPage() {
                         />
                       </div>
 
-                      {/* Services Selection Dropdown */}
+                      {/* Phone Number */}
                       <div className="space-y-2">
                         <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                          Required Service <span className="text-brand-cyan">*</span>
+                          Phone Number
                         </label>
-                        <div className="relative">
-                          <select
-                            name="service"
-                            value={formData.service}
-                            onChange={handleChange}
-                            required
-                            className="w-full appearance-none rounded-lg border border-white/10 light:border-slate-200 bg-white/5 light:bg-slate-50/50 px-4 py-3 text-sm text-white light:text-slate-900 focus:border-brand-cyan focus:outline-none transition-colors cursor-pointer"
-                          >
-                            <option value="" disabled className="text-gray-950 light:text-gray-400 bg-white dark:bg-[#0c1221]">
-                              -- Select a service --
-                            </option>
-                            {servicesList.map((item) => (
-                              <option 
-                                key={item.value} 
-                                value={item.value}
-                                className="text-gray-200 light:text-slate-900 bg-[#0c1221] light:bg-white"
-                              >
-                                {item.label}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                            </svg>
-                          </div>
-                        </div>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="e.g. +62 812-3456-7890"
+                          className="w-full rounded-lg border border-white/10 light:border-slate-200 bg-white/5 light:bg-slate-50/50 px-4 py-3 text-sm text-white light:text-slate-900 placeholder-gray-500 focus:border-brand-cyan focus:outline-none transition-colors"
+                        />
                       </div>
 
+                    </div>
+
+                    {/* Services Selection Dropdown */}
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
+                        Required Service <span className="text-brand-cyan">*</span>
+                      </label>
+                      <div className="relative">
+                        <select
+                          name="service"
+                          value={formData.service}
+                          onChange={handleChange}
+                          required
+                          className="w-full appearance-none rounded-lg border border-white/10 light:border-slate-200 bg-white/5 light:bg-slate-50/50 px-4 py-3 text-sm text-white light:text-slate-900 focus:border-brand-cyan focus:outline-none transition-colors cursor-pointer"
+                        >
+                          <option value="" disabled className="text-gray-950 light:text-gray-400 bg-white dark:bg-[#0c1221]">
+                            -- Select a service --
+                          </option>
+                          {servicesList.map((item) => (
+                            <option 
+                              key={item.value} 
+                              value={item.value}
+                              className="text-gray-200 light:text-slate-900 bg-[#0c1221] light:bg-white"
+                            >
+                              {item.label}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                          </svg>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Message Area */}

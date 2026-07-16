@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Partner {
   name: string;
@@ -6,10 +9,8 @@ interface Partner {
 }
 
 const partners: Partner[] = [
-
   { name: "Antam", logo: "/assets/image/partner_logo/antam.png" },
   { name: "PLN ES", logo: "/assets/image/partner_logo/plnes.png" },
-
   { name: "Vale", logo: "/assets/image/partner_logo/vale.png" },
   { name: "Surveyor Indonesia", logo: "/assets/image/partner_logo/si.png" },
   {
@@ -21,21 +22,22 @@ const partners: Partner[] = [
 ];
 
 export default function OurPartnerMarquee() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative py-28 bg-[#090d16] light:bg-white overflow-hidden transition-colors duration-300">
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
         {/* Sub-badge */}
         <span className="text-[10px] font-bold tracking-widest text-amber-500 uppercase bg-amber-500/5 border border-amber-500/10 px-3 py-1 rounded-full">
-          Trusted Collaborations
+          {t("partner.badge")}
         </span>
 
         {/* Section Heading */}
         <h2 className="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-          Our Partners & Clients
+          {t("partner.title")}
         </h2>
         <p className="mt-4 text-sm md:text-base text-gray-400 light:text-slate-600 max-w-xl mx-auto leading-relaxed">
-          Collaborating with industry leaders in mining, energy, and
-          infrastructure to map the future.
+          {t("partner.subtitle")}
         </p>
 
         {/* Marquee Wrapper with fading edges */}

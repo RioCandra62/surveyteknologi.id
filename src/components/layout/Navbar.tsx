@@ -3,11 +3,33 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon, Globe, ChevronDown } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [lang, setLang] = useState("en");
+  const [isLangOpen, setIsLangOpen] = useState(false);
+
+  const languages = [
+    { code: "id", label: "Indonesia" },
+    { code: "en", label: "English" },
+    { code: "ch", label: "Chinese" }
+  ];
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("lang") || "en";
+    setLang(savedLang);
+  }, []);
+
+  const changeLang = (code: string) => {
+    setLang(code);
+    localStorage.setItem("lang", code);
+    setIsLangOpen(false);
+    // Dispatch a custom event to notify other components of the language change
+    window.dispatchEvent(new Event("languageChange"));
+  };
 
   useEffect(() => {
     // Detect theme on mount
@@ -34,12 +56,14 @@ export default function Navbar() {
     }
   };
 
+  const { t } = useTranslation();
+
   const menuItems = [
-    { name: "Home", href: "/" },
-    { name: "Solutions", href: "/#solutions" },
-    { name: "Our Fleet", href: "/our-fleet" },
-    { name: "About Us", href: "/#about" },
-    { name: "Contact", href: "/contact" },
+    { name: t("nav.home"), href: "/" },
+    { name: t("nav.solutions"), href: "/#solutions" },
+    { name: t("nav.ourFleet"), href: "/our-fleet" },
+    { name: t("nav.aboutUs"), href: "/#about" },
+    { name: t("nav.contact"), href: "/contact" },
   ];
 
   return (
@@ -101,11 +125,45 @@ export default function Navbar() {
               )}
             </button>
 
+            {/* Language Changer Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="flex items-center gap-1.5 rounded-full border border-white/5 light:border-slate-200/80 bg-white/5 light:bg-slate-100 px-3 py-2 text-xs font-semibold text-gray-400 light:text-slate-600 hover:text-white light:hover:text-slate-900 transition-colors focus:outline-none cursor-pointer"
+                aria-label="Change language"
+              >
+                <Globe className="h-3.5 w-3.5" />
+                <span className="uppercase">{lang}</span>
+                <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {isLangOpen && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setIsLangOpen(false)} />
+                  <div className="absolute right-0 mt-2 w-32 origin-top-right rounded-xl border border-white/5 light:border-slate-200 bg-[#090d16]/95 light:bg-white p-1.5 shadow-xl backdrop-blur-md z-20">
+                    {languages.map((item) => (
+                      <button
+                        key={item.code}
+                        onClick={() => changeLang(item.code)}
+                        className={`flex w-full items-center px-3 py-2 text-xs rounded-lg transition-colors font-medium cursor-pointer ${
+                          lang === item.code
+                            ? "bg-brand-cyan/15 text-brand-cyan"
+                            : "text-gray-400 light:text-slate-650 hover:bg-white/5 light:hover:bg-slate-100 hover:text-white light:hover:text-slate-900"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
             <Link
               href="/contact"
               className="inline-flex items-center gap-1.5 rounded-full bg-brand-cyan px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white hover:bg-brand-cyan/90 transition-all duration-300 shadow-[0_0_15px_rgba(0,163,224,0.2)] hover:shadow-[0_0_20px_rgba(0,163,224,0.4)]"
             >
-              Get in Touch
+              {t("nav.contact")}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -125,6 +183,38 @@ export default function Navbar() {
                 <Moon className="h-4 w-4 text-brand-blue" />
               )}
             </button>
+
+            {/* Language Changer Mobile */}
+            <div className="relative">
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="rounded-full border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 p-2 text-gray-400 light:text-slate-600 hover:text-white focus:outline-none"
+                aria-label="Change language"
+              >
+                <Globe className="h-4 w-4" />
+              </button>
+
+              {isLangOpen && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setIsLangOpen(false)} />
+                  <div className="absolute right-0 mt-2 w-32 origin-top-right rounded-xl border border-white/5 light:border-slate-200 bg-[#090d16]/95 light:bg-white p-1.5 shadow-xl backdrop-blur-md z-20">
+                    {languages.map((item) => (
+                      <button
+                        key={item.code}
+                        onClick={() => changeLang(item.code)}
+                        className={`flex w-full items-center px-3 py-2 text-xs rounded-lg transition-colors font-medium cursor-pointer ${
+                          lang === item.code
+                            ? "bg-brand-cyan/15 text-brand-cyan"
+                            : "text-gray-400 light:text-slate-650 hover:bg-white/5 light:hover:bg-slate-100 hover:text-white"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
 
             {/* Mobile Hamburger menu */}
             <button

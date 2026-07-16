@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Globe, ArrowUpRight } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <footer
       id="contact"
@@ -32,17 +36,15 @@ export default function Footer() {
                 </span>
               </div>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-              Survey Teknologi Indonesia delivers high-precision geospatial data
-              and mapping solutions using LiDAR, photogrammetry, bathymetry, and
-              SLAM technologies.
+             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
+              {t("footer.description")}
             </p>
           </div>
 
           {/* Navigation */}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-              Company
+              {t("footer.company")}
             </h4>
             <ul className="space-y-3">
               <li>
@@ -50,7 +52,7 @@ export default function Footer() {
                   href="/"
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Home
+                  {t("nav.home")}
                 </Link>
               </li>
               <li>
@@ -58,7 +60,7 @@ export default function Footer() {
                   href="/our-fleet"
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Our Fleet
+                  {t("nav.ourFleet")}
                 </Link>
               </li>
               <li>
@@ -66,7 +68,7 @@ export default function Footer() {
                   href="#about"
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  About Us
+                  {t("nav.aboutUs")}
                 </a>
               </li>
               <li>
@@ -74,7 +76,7 @@ export default function Footer() {
                   href="#solutions"
                   className="text-sm hover:text-white transition-colors duration-200"
                 >
-                  Solutions
+                  {t("nav.solutions")}
                 </a>
               </li>
             </ul>
@@ -83,7 +85,7 @@ export default function Footer() {
           {/* Services */}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white mb-6">
-              Services
+              {t("footer.services")}
             </h4>
             <ul className="space-y-3">
               <li>
@@ -122,13 +124,22 @@ export default function Footer() {
                   <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/solutions/powerline-inspection"
+                  className="text-sm hover:text-white transition-colors duration-200 flex items-center gap-1 group"
+                >
+                  Powerline Inspection{" "}
+                  <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Contact Details */}
           <div className="flex flex-col space-y-4">
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white mb-2">
-              Contact Us
+              {t("footer.contactUs")}
             </h4>
             <div className="flex items-center gap-3">
               <Mail className="h-4 w-4 text-amber-500" />
@@ -178,8 +189,7 @@ export default function Footer() {
         {/* Footer bottom */}
         <div className="mt-16 border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
           <p>
-            © {new Date().getFullYear()} Survey Teknologi Indonesia. All rights
-            reserved.
+            © {new Date().getFullYear()} Survey Teknologi Indonesia. {t("footer.allRightsReserved")}
           </p>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-white transition-colors">

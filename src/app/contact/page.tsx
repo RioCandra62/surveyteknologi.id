@@ -3,8 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock, Send, ArrowLeft, CheckCircle2, Globe } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function ContactPage() {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,10 +21,10 @@ export default function ContactPage() {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const servicesList = [
-    { value: "lidar", label: "Airborne LiDAR Survey" },
-    { value: "photogrammetry", label: "Drone Photogrammetry" },
-    { value: "bathymetry", label: "Bathymetric & Hydrographic Survey" },
-    { value: "slam", label: "SLAM / Mobile Terrestrial Mapping" },
+    { value: "lidar", label: t("solutions.lidar.title") },
+    { value: "photogrammetry", label: t("solutions.photogrammetry.title") },
+    { value: "bathymetry", label: t("solutions.bathymetry.title") },
+    { value: "slam", label: t("solutions.slam.title") },
     { value: "consulting", label: "GIS Data Processing & Consulting" },
     { value: "other", label: "General Inquiry / Other" },
   ];
@@ -36,7 +39,7 @@ export default function ContactPage() {
     setErrorMessage("");
     if (!formData.name || !formData.email || !formData.service) {
       setStatus("error");
-      setErrorMessage("Please complete all required fields (Name, Email, and Selection Service).");
+      setErrorMessage(t("contact.requiredFieldsError"));
       return;
     }
 
@@ -64,12 +67,12 @@ export default function ContactPage() {
         });
       } else {
         setStatus("error");
-        setErrorMessage(data.message || "Failed to send email. Please check your server SMTP configuration.");
+        setErrorMessage(data.message || t("contact.submitError"));
       }
     } catch (error) {
       console.error("Error submitting contact form:", error);
       setStatus("error");
-      setErrorMessage("An unexpected error occurred. Please try again later.");
+      setErrorMessage(t("contact.unexpectedError"));
     }
   };
 
@@ -92,24 +95,21 @@ export default function ContactPage() {
               href="/" 
               className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gray-400 light:text-slate-500 hover:text-white light:hover:text-slate-900 transition-colors"
             >
-              <ArrowLeft className="h-3 w-3" /> Back to Home
+              <ArrowLeft className="h-3 w-3" /> {t("contact.backToHome")}
             </Link>
             <span className="text-xs text-gray-600">/</span>
-            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">Contact</span>
+            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">{t("nav.contact")}</span>
           </div>
 
           <div className="max-w-3xl">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              Get in Touch
+              {t("contact.getInTouch")}
             </span>
             <h1 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-              Start Your Geospatial <br />
-              <span className="bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">
-                Project Consultation
-              </span>
+              {t("contact.title")}
             </h1>
             <p className="mt-4 text-base sm:text-lg text-gray-300 light:text-slate-600 leading-relaxed font-light">
-              Connect with our survey and engineering team to get detailed scoping, coordinate validation, and tailored pricing estimates.
+              {t("contact.subtitle")}
             </p>
           </div>
 
@@ -127,7 +127,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <h2 className="text-2xl font-bold text-white light:text-slate-900">Survey Teknologi Indonesia</h2>
                 <p className="text-sm text-gray-400 light:text-slate-600 leading-relaxed">
-                  Headquartered in Makassar, we deploy survey teams and state-of-the-art drone payloads nationwide for major infrastructure, carbon mapping, and resource industries.
+                  {t("contact.officeDesc")}
                 </p>
               </div>
 
@@ -148,7 +148,7 @@ export default function ContactPage() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">Office Location</h4>
+                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">{t("contact.officeLocation")}</h4>
                     <p className="mt-1 text-sm text-gray-400 light:text-slate-600 leading-relaxed">
                      Golden Galaxy Inn, Bangkala, Manggala  <br />
                       Makassar, Sulawesi Selatan, Indonesia
@@ -162,7 +162,7 @@ export default function ContactPage() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">Direct Email</h4>
+                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">{t("contact.directEmail")}</h4>
                     <p className="mt-1 text-sm text-gray-400 light:text-slate-600">
                       <a href="mailto:info@surveyteknologi.id" className="hover:text-brand-cyan transition-colors">
                         info@surveyteknologi.id
@@ -177,7 +177,7 @@ export default function ContactPage() {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">Call Center</h4>
+                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">{t("contact.callCenter")}</h4>
                     <p className="mt-1 text-sm text-gray-400 light:text-slate-600">
                       <a href="tel:+622139707890" className="hover:text-brand-cyan transition-colors">
                         +62 811-5064-378
@@ -192,9 +192,9 @@ export default function ContactPage() {
                     <Clock className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">Operations Hours</h4>
+                    <h4 className="text-sm font-bold text-white light:text-slate-900 uppercase tracking-wider">{t("contact.opsHours")}</h4>
                     <p className="mt-1 text-sm text-gray-400 light:text-slate-600">
-                      Monday – Friday: 08:30 – 17:30 (WIB)
+                      {t("contact.opsHoursDesc")}
                     </p>
                   </div>
                 </div>
@@ -203,7 +203,7 @@ export default function ContactPage() {
 
               {/* Social Channels */}
               <div className="pt-4 border-t border-white/5 light:border-slate-200">
-                <span className="text-xs text-gray-500 uppercase tracking-widest block mb-4">Connect with us</span>
+                <span className="text-xs text-gray-500 uppercase tracking-widest block mb-4">{t("contact.connectWithUs")}</span>
                 <div className="flex gap-4">
                   <a href="#" className="h-10 w-10 rounded-lg border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 hover:text-white light:hover:text-slate-950 flex items-center justify-center text-gray-400 transition-colors">
                     <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -230,28 +230,28 @@ export default function ContactPage() {
                       <CheckCircle2 className="h-10 w-10 animate-bounce" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white light:text-slate-900">Inquiry Sent Successfully!</h3>
+                      <h3 className="text-2xl font-bold text-white light:text-slate-900">{t("contact.successTitle")}</h3>
                       <p className="mt-3 text-sm text-gray-400 light:text-slate-600 max-w-md mx-auto leading-relaxed">
-                        Thank you for reaching out to Survey Teknologi Indonesia. Your technical scope query has been logged. Our surveying engineer will contact you within 24 business hours.
+                        {t("contact.successDesc")}
                       </p>
                     </div>
                     <button
                       onClick={() => setStatus("idle")}
                       className="mt-6 px-6 py-2.5 bg-brand-cyan/10 hover:bg-brand-cyan/20 text-brand-cyan font-bold rounded-lg transition-colors text-xs uppercase tracking-wider"
                     >
-                      Send another request
+                      {t("contact.sendAnother")}
                     </button>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                      <h3 className="text-xl font-bold text-white light:text-slate-900">Contact Form</h3>
-                      <p className="mt-1 text-xs text-gray-400 light:text-slate-500">Provide your technical requirements to generate an engineering bid response.</p>
+                      <h3 className="text-xl font-bold text-white light:text-slate-900">{t("contact.formTitle")}</h3>
+                      <p className="mt-1 text-xs text-gray-400 light:text-slate-500">{t("contact.formDesc")}</p>
                     </div>
 
                     {status === "error" && (
                       <div className="p-3 rounded-lg border border-red-500/25 bg-red-500/10 text-red-400 text-xs">
-                        {errorMessage || "Please complete all required fields (Name, Email, and Selection Service)."}
+                        {errorMessage || t("contact.requiredFieldsError")}
                       </div>
                     )}
 
@@ -260,7 +260,7 @@ export default function ContactPage() {
                       {/* Name */}
                       <div className="space-y-2">
                         <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                          Full Name <span className="text-brand-cyan">*</span>
+                          {t("contact.fullName")} <span className="text-brand-cyan">*</span>
                         </label>
                         <input
                           type="text"
@@ -276,7 +276,7 @@ export default function ContactPage() {
                       {/* Email */}
                       <div className="space-y-2">
                         <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                          Email Address <span className="text-brand-cyan">*</span>
+                          {t("contact.emailAddress")} <span className="text-brand-cyan">*</span>
                         </label>
                         <input
                           type="email"
@@ -296,7 +296,7 @@ export default function ContactPage() {
                       {/* Company */}
                       <div className="space-y-2">
                         <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                          Company Name
+                          {t("contact.companyName")}
                         </label>
                         <input
                           type="text"
@@ -311,7 +311,7 @@ export default function ContactPage() {
                       {/* Phone Number */}
                       <div className="space-y-2">
                         <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                          Phone Number
+                          {t("contact.phoneNumber")}
                         </label>
                         <input
                           type="tel"
@@ -328,7 +328,7 @@ export default function ContactPage() {
                     {/* Services Selection Dropdown */}
                     <div className="space-y-2">
                       <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                        Required Service <span className="text-brand-cyan">*</span>
+                        {t("contact.requiredService")} <span className="text-brand-cyan">*</span>
                       </label>
                       <div className="relative">
                         <select
@@ -339,7 +339,7 @@ export default function ContactPage() {
                           className="w-full appearance-none rounded-lg border border-white/10 light:border-slate-200 bg-white/5 light:bg-slate-50/50 px-4 py-3 text-sm text-white light:text-slate-900 focus:border-brand-cyan focus:outline-none transition-colors cursor-pointer"
                         >
                           <option value="" disabled className="text-gray-950 light:text-gray-400 bg-white dark:bg-[#0c1221]">
-                            -- Select a service --
+                            {t("contact.selectService")}
                           </option>
                           {servicesList.map((item) => (
                             <option 
@@ -362,14 +362,14 @@ export default function ContactPage() {
                     {/* Message Area */}
                     <div className="space-y-2">
                       <label className="text-xs font-semibold text-gray-300 light:text-slate-600 uppercase tracking-wider block">
-                        Message / Project Description
+                        {t("contact.message")}
                       </label>
                       <textarea
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
                         rows={5}
-                        placeholder="Please detail your area location, size in hectares, target accuracy standards, and any special deliverables required."
+                        placeholder={t("contact.messagePlaceholder")}
                         className="w-full rounded-lg border border-white/10 light:border-slate-200 bg-white/5 light:bg-slate-50/50 px-4 py-3 text-sm text-white light:text-slate-900 placeholder-gray-500 focus:border-brand-cyan focus:outline-none transition-colors resize-none"
                       />
                     </div>
@@ -386,11 +386,11 @@ export default function ContactPage() {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                          Processing Scope...
+                          {t("contact.processing")}
                         </>
                       ) : (
                         <>
-                          Send Inquiry <Send className="h-4 w-4" />
+                          {t("contact.sendInquiry")} <Send className="h-4 w-4" />
                         </>
                       )}
                     </button>

@@ -6,8 +6,10 @@ import OurPartner from "@/components/sections/ourpartner";
 import PortfolioStats from "@/components/sections/portofolio";
 import SolutionsHero from "@/components/sections/solution/solutionHero";
 import SolutionsList from "@/components/sections/solution/solutionList";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function HomePage() {
+  const { t } = useTranslation();
   return (
     <>
       {/* Hero Section */}
@@ -74,23 +76,21 @@ export default function HomePage() {
           {/* Tagline Badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/5 px-4 py-1.5 text-xs font-semibold tracking-wider text-amber-400 uppercase mb-8 shadow-[0_0_15px_rgba(245,158,11,0.05)]">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-ping" />
-            INDONESIA'S PREMIER GEOSPATIAL TEAM
+            {t("hero.tagline")}
           </div>
 
           {/* Heading */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
-            High-Precision{" "}
+            {t("hero.title1")}{" "}
             <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent">
-              Drone Survey & Mapping
+              {t("hero.title2")}
             </span>{" "}
-            Solutions
+            {t("hero.title3")}
           </h1>
 
           {/* Subtitle */}
           <p className="mt-6 text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
-            Survey Teknologi Indonesia delivers survey-grade, actionable
-            geospatial data using LiDAR, photogrammetry, bathymetry, and spatial
-            digital twins.
+            {t("hero.subtitle")}
           </p>
 
           {/* Action Buttons */}
@@ -99,13 +99,13 @@ export default function HomePage() {
               href="#solutions"
               className="px-8 py-4 bg-amber-500 text-black hover:bg-amber-400 font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:-translate-y-0.5 text-sm uppercase tracking-wider"
             >
-              Explore Solutions
+              {t("hero.exploreBtn")}
             </a>
             <Link
               href="/contact"
               className="px-8 py-4 border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-all duration-300 backdrop-blur-sm hover:-translate-y-0.5 text-sm uppercase tracking-wider"
             >
-              Contact Us
+              {t("hero.contactBtn")}
             </Link>
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function HomePage() {
         {/* Animated Scroll Down Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center gap-2">
           <span className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">
-            Scroll
+            {t("hero.scroll")}
           </span>
           <div className="w-6 h-10 border border-gray-600 rounded-full p-1 flex justify-center">
             <div className="w-1 h-2 bg-amber-500 rounded-full animate-bounce mt-1" />

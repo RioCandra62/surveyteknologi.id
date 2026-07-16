@@ -1,4 +1,10 @@
+"use client";
+
+import { useTranslation } from "@/hooks/useTranslation";
+
 export default function SolutionsHero() {
+  const { t } = useTranslation();
+
   return (
     <section
       className="relative py-28 px-6 bg-cover bg-center text-white overflow-hidden"
@@ -16,17 +22,15 @@ export default function SolutionsHero() {
       <div className="relative max-w-7xl mx-auto text-left">
         {/* Sub-badge */}
         <span className="text-[10px] font-bold tracking-widest text-amber-500 uppercase bg-amber-500/5 border border-amber-500/10 px-3 py-1 rounded-full">
-          Core Offerings
+          {t("solutions.badge")}
         </span>
 
         <h2 className="mt-6 text-3xl md:text-5xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight max-w-3xl">
-          Advanced Drone-Based Survey & Mapping
+          {t("solutions.title")}
         </h2>
 
         <p className="mt-6 max-w-2xl text-base sm:text-lg text-gray-300 light:text-slate-700 leading-relaxed font-light">
-          Survey Teknologi Indonesia delivers survey-grade geospatial datasets
-          and high-density point clouds for critical engineering,
-          infrastructure, and mining operations.
+          {t("solutions.subtitle")}
         </p>
       </div>
     </section>

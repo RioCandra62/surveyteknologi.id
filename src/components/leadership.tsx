@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Quote } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Leadership() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative bg-gradient-to-br from-[#090d16] via-[#0c1221] to-[#090d16] light:from-slate-50 light:via-slate-100/50 light:to-slate-50 py-28 px-6 overflow-hidden transition-colors duration-300">
       {/* Subtle tech grid background just for this section */}
@@ -20,20 +25,19 @@ export default function Leadership() {
 
           {/* Sub-badge */}
           <span className="text-[10px] font-bold tracking-widest text-amber-500 uppercase bg-amber-500/5 border border-amber-500/10 px-3 py-1 rounded-full">
-            Executive Vision
+            {t("leadership.badge")}
           </span>
 
           <h3 className="mt-6 text-2xl md:text-3xl font-medium text-gray-100 light:text-slate-800 italic leading-relaxed relative">
-            "Kualitas data dan inovasi adalah kunci kesuksesan dalam setiap
-            proyek survei dan pemetaan yang kami lakukan."
+            {t("leadership.quote")}
           </h3>
 
           <div className="mt-8">
             <p className="text-xl font-bold tracking-wide text-white light:text-slate-900">
-              Hindrawan HM
+              {t("leadership.name")}
             </p>
             <p className="text-sm font-semibold text-amber-500 tracking-wider uppercase mt-1">
-              Direktur Utama, Survey Teknologi Indonesia
+              {t("leadership.role")}
             </p>
           </div>
         </div>

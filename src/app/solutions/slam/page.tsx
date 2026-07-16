@@ -4,16 +4,60 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Scan, Layers, Compass, Zap } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function SlamSolutionPage() {
-  const specs = [
+  const { t, lang } = useTranslation();
+  const specs = lang === "id" ? [
+    { label: "Akurasi Lokal", value: "1 - 2 cm (Tingkat Survei)" },
+    { label: "Rentang Pemindaian", value: "Jangkauan Hingga 120m" },
+    { label: "Kecepatan Titik", value: "650.000 titik / detik" },
+    { label: "Tautan Posisi", value: "RTK GNSS + SLAM Visual" },
+  ] : lang === "ch" ? [
+    { label: "局部精度", value: "1 - 2 厘米（测量级）" },
+    { label: "扫描范围", value: "测量范围达 120 米" },
+    { label: "点云速率", value: "650,000 点/秒" },
+    { label: "定位模式", value: "RTK GNSS + 视觉 SLAM" },
+  ] : [
     { label: "Local Accuracy", value: "1 - 2 cm (Survey Grade)" },
     { label: "Scanning Range", value: "Up to 120m Range" },
     { label: "Point Speed", value: "650,000 pts / sec" },
     { label: "Positioning Link", value: "RTK GNSS + Visual SLAM" },
   ];
 
-  const conceptualPillars = [
+  const conceptualPillars = lang === "id" ? [
+    {
+      icon: <Scan className="h-6 w-6 text-brand-cyan" />,
+      title: "Pemetaan Simultan",
+      desc: "Scanner LiDAR mengukur bentuk sekitar secara real-time saat melacak profil gerakan, menyusun koordinat 3D tanpa memerlukan sinyal GPS."
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "Kalibrasi Penutupan Loop",
+      desc: "Mengunjungi kembali posisi pemindaian sebelumnya secara otomatis mengkalibrasi parameter hanyutan lintasan, menyesuaikan akurasi data koordinat."
+    },
+    {
+      icon: <Compass className="h-6 w-6 text-brand-cyan" />,
+      title: "Integrasi RTK & SLAM Visual",
+      desc: "Menggabungkan pelacakan bingkai visual, catatan IMU, dan target GPS RTK geodetik untuk mengikat point cloud dalam ruangan ke posisi koordinat absolut."
+    },
+  ] : lang === "ch" ? [
+    {
+      icon: <Scan className="h-6 w-6 text-brand-cyan" />,
+      title: "同步建图",
+      desc: "激光雷达扫描仪实时测量周围轮廓并跟踪运动轨迹，无需 GPS 信号即可编译出三维坐标点云。"
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "闭环检测校准",
+      desc: "重新访问先前扫描的位置可自动校准航线漂移参数，自动纠正点云坐标精度。"
+    },
+    {
+      icon: <Compass className="h-6 w-6 text-brand-cyan" />,
+      title: "RTK 与视觉 SLAM 融合",
+      desc: "结合图像特征追踪、IMU 记录和 geodetic RTK GPS 控制点，把室内点云精确对齐到绝对大地坐标系。"
+    },
+  ] : [
     {
       icon: <Scan className="h-6 w-6 text-brand-cyan" />,
       title: "Simultaneous Mapping",
@@ -31,7 +75,123 @@ export default function SlamSolutionPage() {
     },
   ];
 
-  const deliverables = [
+  const deliverables = lang === "id" ? [
+    {
+      id: "del-01",
+      title: "Fusi Point Cloud Udara & SLAM",
+      desc: "Dataset 3D hibrida yang menyatu sempurna menggabungkan pemindaian LiDAR drone altitudo tinggi dengan rekaman SLAM genggam terestrial. Menghilangkan kesenjangan data spasial dengan menggabungkan kanopi atap dan topografi luar ruangan dengan tata letak interior dan ruang bawah tanah menjadi satu sistem koordinat terpadu.",
+      image: "https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs12518-018-0221-7/MediaObjects/12518_2018_221_Fig4_HTML.png",
+      tags: ["Fusi Data", "Model 3D Mulus", "Drone + SLAM"],
+      hudCode: "FUSION: AIRBORNE + TERRESTRIAL // TIE-POINTS: ICP // ERROR: <2.5cm",
+      specs: [
+        { name: "Sensor Udara", value: "Zenmuse L2 / Zenmuse L3 UAV LiDAR" },
+        { name: "Sensor Terestrial", value: "CHCNAV RS10 / Share S10 Handheld SLAM" },
+        { name: "Metode Penyelarasan", value: "RTK GNSS + Pencocokan Titik ICP Otomatis" },
+        { name: "Aplikasi Umum", value: "Fasilitas industri, kanopi kehutanan, pemodelan BIM" },
+      ],
+      isFeatured: true,
+    },
+    {
+      id: "del-02",
+      title: "Denah Lantai & Tata Letak CAD",
+      desc: "Gambar CAD yang memetakan kolom struktural, dinding, dan tata letak batas, disusun langsung dari koordinat pemindaian SLAM.",
+      image: "https://i.pinimg.com/736x/7f/21/2f/7f212fe42fcfe5109746408d8fd6b872.jpg",
+      tags: ["Gambar CAD", "Format DXF / DWG"],
+      hudCode: "SCALE: 1:100 // FILE: .DWG // TARGET: AS-BUILT",
+      specs: [
+        { name: "Format Gambar", value: "AutoCAD DWG, DXF, Grafik PDF" },
+        { name: "Pemetaan Fitur", value: "Dinding struktural, kolom, pintu, tangga" },
+        { name: "Skala Visual", value: "Profil dan potongan lantai terperinci" },
+        { name: "Waktu Pengerjaan", value: "Pembuatan draf cepat dalam 48 jam" },
+      ],
+    },
+    {
+      id: "del-03",
+      title: "Model 3D BIM (Revit)",
+      desc: "Model Revit 3D parametrik yang dibuat langsung dari koordinat pemindaian SLAM. Mempercepat inspeksi bangunan dan manajemen fasilitas.",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMj5jy6HDDrV1YlCIa7bnPSlpGwPfeh0l7chf7HI6dbCEQ9abZvr5gBps&s=10  ",
+      tags: ["Revit RVT", "Siap BIM"],
+      hudCode: "BIM_LOD: LOD 300 // FILE: .RVT // MODEL: 3D",
+      specs: [
+        { name: "Tingkat BIM", value: "Hingga spesifikasi LOD 300" },
+        { name: "Kelas Struktural", value: "Pilar struktural, saluran, pipa HVAC" },
+        { name: "Kompatibilitas", value: "Autodesk Revit, ArchiCAD, SketchUp" },
+        { name: "Pemeriksaan Scan-ke-BIM", value: "Kualitas diperiksa terhadap mesh hasil pemindaian" },
+      ],
+    },
+    {
+      id: "del-04",
+      title: "Survei Volumetrik Stockpile (Gudang)",
+      desc: "Perhitungan volume stok material curah (bijih, mineral, biji-bijian) yang disimpan di dalam hanggar tertutup dan gudang di mana drone tidak dapat beroperasi.",
+      image: "/assets/image/bathymetry.png",
+      tags: ["CSV / PDF", "Volumetrik"],
+      hudCode: "STOCK_VOLUME: 15,200 m³ // ERROR: <1.5% // BAS",
+      specs: [
+        { name: "Presisi Volume", value: "Presisi Volumetrik >98.5%" },
+        { name: "Lingkungan Survei", value: "Hanggar tertutup industri, silo penyimpanan" },
+        { name: "Kecepatan Pengolahan", value: "Laporan volume disusun dalam 12 jam" },
+        { name: "Laporan Output", value: "Laporan PDF, kontur Mesh 3D, Excel CSV" },
+      ],
+    },
+  ] : lang === "ch" ? [
+    {
+      id: "del-01",
+      title: "空地一体激光雷达点云融合",
+      desc: "无缝融合高空无人机激光雷达扫描与地面手持 SLAM 记录的混合三维数据集。通过将屋顶冠层、室外地形与内部布局、地下空间整合至单一统一坐标系，消除空间数据空白点。",
+      image: "https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs12518-018-0221-7/MediaObjects/12518_2018_221_Fig4_HTML.png",
+      tags: ["数据融合", "无缝3D模型", "无人机+SLAM"],
+      hudCode: "FUSION: AIRBORNE + TERRESTRIAL // TIE-POINTS: ICP // ERROR: <2.5cm",
+      specs: [
+        { name: "航空传感器", value: "Zenmuse L2 / Zenmuse L3 无人机激光雷达" },
+        { name: "地面传感器", value: "CHCNAV RS10 / Share S10 手持 SLAM" },
+        { name: "对齐方法", value: "RTK GNSS + 自动 ICP 点云配准" },
+        { name: "常见应用", value: "工业厂房、林业林冠层、BIM三维建模" },
+      ],
+      isFeatured: true,
+    },
+    {
+      id: "del-02",
+      title: "CAD 二维楼层平面图及立面图",
+      desc: "利用手持扫描仪所测得的 SLAM 点云数据直接绘制建筑结构柱、墙体和立面轮廓，输出 CAD 图纸。",
+      image: "https://i.pinimg.com/736x/7f/21/2f/7f212fe42fcfe5109746408d8fd6b872.jpg",
+      tags: ["CAD 图纸", "DXF / DWG 格式"],
+      hudCode: "SCALE: 1:100 // FILE: .DWG // TARGET: AS-BUILT",
+      specs: [
+        { name: "图纸格式", value: "AutoCAD DWG, DXF, PDF 图纸" },
+        { name: "要素测绘", value: "承重墙、框架柱、门窗、楼梯" },
+        { name: "图纸展现", value: "详细的平面图剖面和细部高程" },
+        { name: "交付时效", value: "48小时内极速出图" },
+      ],
+    },
+    {
+      id: "del-03",
+      title: "3D BIM 建筑信息模型 (Revit)",
+      desc: "直接基于 SLAM 扫描坐标建立的参数化 3D Revit 模型。用于加速建筑结构诊断和设施维护管理。",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMj5jy6HDDrV1YlCIa7bnPSlpGwPfeh0l7chf7HI6dbCEQ9abZvr5gBps&s=10  ",
+      tags: ["Revit RVT", "BIM 就绪"],
+      hudCode: "BIM_LOD: LOD 300 // FILE: .RVT // MODEL: 3D",
+      specs: [
+        { name: "BIM 级别", value: "支持定制高达 LOD 300 规格模型" },
+        { name: "结构细部分类", value: "结构柱、机电桥架、暖通管线" },
+        { name: "兼容平台", value: "Autodesk Revit, ArchiCAD, SketchUp" },
+        { name: "点云BIM对比", value: "根据扫描网格进行严格 of 精度校核" },
+      ],
+    },
+    {
+      id: "del-04",
+      title: "封闭式料棚体积测量 (Sheds)",
+      desc: "在无人机无法飞行的工业密闭料棚、筒仓和仓库内，对大宗堆存物料（矿石、矿物、谷物）进行高精度储量体积解算。",
+      image: "/assets/image/bathymetry.png",
+      tags: ["CSV / PDF", "体积测量"],
+      hudCode: "STOCK_VOLUME: 15,200 m³ // ERROR: <1.5% // BAS",
+      specs: [
+        { name: "测量精度", value: ">98.5% 立方体积精度" },
+        { name: "勘测环境", value: "工业密闭料场、储备筒仓" },
+        { name: "数据处理", value: "12小时内极速编排体积报告" },
+        { name: "输出报告", value: "PDF报告、3D网格等高线、Excel CSV" },
+      ],
+    },
+  ] : [
     {
       id: "del-01",
       title: "Airborne & SLAM Point Cloud Fusion",
@@ -78,7 +238,7 @@ export default function SlamSolutionPage() {
     {
       id: "del-04",
       title: "Volumetric Stockpiles Survey (Sheds)",
-      desc: " stock calculations of bulk materials (ore, minerals, grain) stored inside closed sheds and warehouses where drones cannot operate.",
+      desc: "Calculates the volumes of stockpiled materials (ore, minerals, grain) stored inside closed hangars and warehouses where drones cannot operate.",
       image: "/assets/image/bathymetry.png",
       tags: ["CSV / PDF", "Volumetrics"],
       hudCode: "STOCK_VOLUME: 15,200 m³ // ERROR: <1.5% // BAS",
@@ -91,7 +251,41 @@ export default function SlamSolutionPage() {
     },
   ];
 
-  const useCases = [
+  const useCases = lang === "id" ? [
+    {
+      sector: "Pertambangan Bawah Tanah",
+      use: "Pemetaan terowongan, sumur tambang, dan stockpile di area yang tidak dapat ditembus sinyal GPS.",
+    },
+    {
+      sector: "Audit BIM Bangunan",
+      use: "Pemindaian cepat tata letak dalam ruangan untuk memetakan dimensi struktural dan menyusun database BIM.",
+    },
+    {
+      sector: "Hanggar Stockpile",
+      use: "Mengukur volume stockpile di dalam gudang industri dan silo penyimpanan tertutup.",
+    },
+    {
+      sector: "Biomassa Kehutanan",
+      use: "Pemindaian sambil berjalan untuk mengukur tinggi batang pohon, volume cabang, dan inventarisasi hutan.",
+    },
+  ] : lang === "ch" ? [
+    {
+      sector: "地下矿山",
+      use: "在 GPS 信号无法穿透的地下巷道、竖井和采空区进行三维数字化测绘。",
+    },
+    {
+      sector: "建筑 BIM 审计",
+      use: "快速扫描室内布局以检测结构尺寸，为历史建筑或既有厂房建立 BIM 数据库。",
+    },
+    {
+      sector: "密闭储煤/料棚",
+      use: "测量封闭式工业仓库、圆形料场和筒仓内的物料堆存体积。",
+    },
+    {
+      sector: "林业生物量估算",
+      use: "手持步行扫描测量树干高度、枝干体积以及编制森林资源资产普查清单。",
+    },
+  ] : [
     {
       sector: "Underground Mining",
       use: "Mapping tunnels, shafts, and stockpiles where GPS signals cannot penetrate.",
@@ -126,10 +320,10 @@ export default function SlamSolutionPage() {
               href="/" 
               className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gray-400 light:text-slate-500 hover:text-white light:hover:text-slate-900 transition-colors"
             >
-              <ArrowLeft className="h-3 w-3" /> Back to Home
+              <ArrowLeft className="h-3 w-3" /> {t("contact.backToHome")}
             </Link>
             <span className="text-xs text-gray-600">/</span>
-            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">Solutions</span>
+            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">{t("nav.solutions")}</span>
             <span className="text-xs text-gray-600">/</span>
             <span className="text-xs text-gray-400 light:text-slate-500">SLAM</span>
           </div>
@@ -146,14 +340,14 @@ export default function SlamSolutionPage() {
             </span>
 
             <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-              SLAM Mapping Solutions <br />
+              {t("solutions.slam.title")} <br />
               <span className="bg-gradient-to-r from-brand-cyan via-sky-400 to-brand-blue bg-clip-text text-transparent">
-                & Indoor 3D Laser Scanning
+                {lang === "id" ? "& Pemindaian Laser 3D Indoor" : lang === "ch" ? "& 室内 3D 激光扫描" : "& Indoor 3D Laser Scanning"}
               </span>
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-gray-300 light:text-slate-700 leading-relaxed font-light max-w-3xl">
-              Mapping complex structures, tunnels, and warehouses using handheld SLAM scanners, generating centimeter-accurate 3D coordinate point clouds where GPS is unavailable.
+              {t("solutions.slam.desc")}
             </p>
           </div>
 
@@ -178,17 +372,27 @@ export default function SlamSolutionPage() {
             
             <div className="lg:col-span-6 space-y-6">
               <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-                Technology Overview
+                {lang === "id" ? "Ikhtisar Teknologi" : lang === "ch" ? "技术概述" : "Technology Overview"}
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                Indoor & Underground 3D Mapping
+                {lang === "id" ? "Pemetaan 3D Ruang Indoor & Bawah Tanah" : lang === "ch" ? "室内与地下 3D 空间测绘" : "Indoor & Underground 3D Mapping"}
               </h2>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                Simultaneous Localization and Mapping (SLAM) is an algorithmic system that allows scanners to track their motion trajectory while building a 3D laser profile of the environment. Unlike standard aerial drones that depend on GPS, handheld SLAM instruments utilize laser sensors and IMUs to maintain positioning, mapping enclosed spaces with high local precision.
+                {lang === "id"
+                  ? "Simultaneous Localization and Mapping (SLAM) adalah sistem algoritmik yang memungkinkan pemindai melacak lintasan gerakannya sendiri sambil membangun profil laser 3D dari lingkungan sekitar. Berbeda dengan drone udara standar yang bergantung pada GPS, instrumen SLAM genggam memanfaatkan sensor laser dan IMU untuk mempertahankan pemosisian, memetakan ruang tertutup dengan presisi lokal yang tinggi."
+                  : lang === "ch"
+                    ? "同步定位与建图 (SLAM) 是一种算法系统，允许扫描仪在构建周围环境的三维激光剖面时跟踪其自身的运动轨迹。与依赖 GPS 的标准航测无人机不同，手持式 SLAM 设备利用激光传感器和 IMU 来维持定位，以极高的局部精度测量封闭空间。"
+                    : "Simultaneous Localization and Mapping (SLAM) is an algorithmic system that allows scanners to track their motion trajectory while building a 3D laser profile of the environment. Unlike standard aerial drones that depend on GPS, handheld SLAM instruments utilize laser sensors and IMUs to maintain positioning, mapping enclosed spaces with high local precision."
+                }
               </p>
               <div className="border-l-2 border-brand-cyan/30 pl-4 py-1">
                 <p className="text-sm italic text-gray-300 light:text-slate-700">
-                  By matching overlapping features and implementing loop closure loops, SLAM algorithms filter out trajectory drift, delivering clean 3D coordinate grids.
+                  {lang === "id"
+                    ? "Dengan mencocokkan fitur yang tumpang tindih dan menerapkan loop closure, algoritma SLAM menyaring penyimpangan lintasan, menghasilkan grid koordinat 3D yang bersih."
+                    : lang === "ch"
+                      ? "通过对齐重叠的几何特征并执行闭环检测校正，SLAM 算法能够过滤掉航线累积漂移，输出干净的三维坐标网格。"
+                      : "By matching overlapping features and implementing loop closure loops, SLAM algorithms filter out trajectory drift, delivering clean 3D coordinate grids."
+                  }
                 </p>
               </div>
             </div>
@@ -225,13 +429,13 @@ export default function SlamSolutionPage() {
           
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              Industrial Hardware
+              {lang === "id" ? "Perangkat Keras Industri" : lang === "ch" ? "工业硬件" : "Industrial Hardware"}
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              SLAM Handheld Fleet
+              {lang === "id" ? "Armada Genggam SLAM" : lang === "ch" ? "SLAM 手持扫描设备" : "SLAM Handheld Fleet"}
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              We operate visual SLAM scanners and real-time edge processing units to map complex environments.
+              {lang === "id" ? "Kami mengoperasikan pemindai SLAM visual dan unit pemrosesan edge real-time untuk memetakan lingkungan yang rumit." : lang === "ch" ? "我们运行视觉 SLAM 扫描仪和实时边缘计算单元，以建图复杂的空间环境。" : "We operate visual SLAM scanners and real-time edge processing units to map complex environments."}
             </p>
           </div>
 
@@ -244,16 +448,21 @@ export default function SlamSolutionPage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">01</div>
               <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">CHCNAV RS10 Handheld SLAM</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                A professional visual SLAM scanner. Features integrated RTK GNSS targets, dual panoramic visual cameras, and active laser rangefinders. Links global coordinates with indoor spatial scans seamlessly.
+                {lang === "id"
+                  ? "Pemindai SLAM visual profesional. Dilengkapi target RTK GNSS terintegrasi, kamera visual panorama ganda, dan laser rangefinder aktif. Menghubungkan koordinat global dengan pemindaian spasial dalam ruangan secara mulus."
+                  : lang === "ch"
+                    ? "专业级视觉 SLAM 扫描仪。集成 RTK GNSS 控制点、双全景可见光相机以及有源激光测距仪。将大地全球坐标与室内空间扫描无缝锚定联接。"
+                    : "A professional visual SLAM scanner. Features integrated RTK GNSS targets, dual panoramic visual cameras, and active laser rangefinders. Links global coordinates with indoor spatial scans seamlessly."
+                }
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block">Scanning Speed</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Kecepatan Memindai" : lang === "ch" ? "扫描速率" : "Scanning Speed"}</span>
                   <span className="font-bold text-white light:text-slate-900 mt-1 block">650,000 pts/sec</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">Camera Resolution</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Panoramic Visuals</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Resolusi Kamera" : lang === "ch" ? "相机分辨率" : "Camera Resolution"}</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">{lang === "id" ? "Visual Panorama" : lang === "ch" ? "全景视觉" : "Panoramic Visuals"}</span>
                 </div>
               </div>
             </div>
@@ -265,16 +474,25 @@ export default function SlamSolutionPage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">02</div>
               <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">Share S10 SLAM Scanner</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                An ultra-portable handheld mapping system. Processes scans in real-time on local edge processors, enabling rapid stockpile calculations inside warehouses and structural inspections of vertical assets.
+                {lang === "id"
+                  ? "Sistem pemetaan genggam ultra-portabel. Memproses pemindaian secara real-time pada prosesor edge lokal, memungkinkan kalkulasi cepat volume stockpile di dalam gudang dan inspeksi struktural aset vertikal."
+                  : lang === "ch"
+                    ? "便携式手持测绘建图系统。在本地边缘处理器上实时运行解算扫描，支持封闭仓库内的快速堆体体积测算以及垂直资产的结构巡检。"
+                    : "An ultra-portable handheld mapping system. Processes scans in real-time on local edge processors, enabling rapid stockpile calculations inside warehouses and structural inspections of vertical assets."
+                }
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block">Scanning Range</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Up to 80 meters</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Rentang Pemindaian" : lang === "ch" ? "扫描范围" : "Scanning Range"}</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">
+                    {lang === "id" ? "Hingga 80 meter" : lang === "ch" ? "长达 80 米" : "Up to 80 meters"}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">Processing Link</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Edge SLAM processor</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Tautan Pemrosesan" : lang === "ch" ? "解算模式" : "Processing Link"}</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">
+                    {lang === "id" ? "Prosesor Edge SLAM" : lang === "ch" ? "边缘 SLAM 处理器" : "Edge SLAM processor"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -290,13 +508,18 @@ export default function SlamSolutionPage() {
           
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              Output Products
+              {lang === "id" ? "Produk Output" : lang === "ch" ? "输出产品" : "Output Products"}
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              SLAM Deliverables
+              {lang === "id" ? "Hasil Survei SLAM" : lang === "ch" ? "SLAM 成果交付" : "SLAM Deliverables"}
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              Kami memproses data point cloud SLAM menjadi model CAD dan BIM berformat standar industri.
+              {lang === "id"
+                ? "Kami memproses data point cloud SLAM menjadi model CAD dan BIM berformat standar industri."
+                : lang === "ch"
+                  ? "我们将手持 SLAM 点云数据处理成行业标准格式的 CAD 和 BIM 模型。"
+                  : "We process SLAM point cloud data into industry-standard CAD and BIM models."
+              }
             </p>
           </div>
 
@@ -352,7 +575,7 @@ export default function SlamSolutionPage() {
                         DELIVERABLE 0{idx + 1}
                         {item.isFeatured && (
                           <span className="bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30 text-[8px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">
-                            Featured Fusion
+                            {lang === "id" ? "Fusi Unggulan" : lang === "ch" ? "重点推荐" : "Featured Fusion"}
                           </span>
                         )}
                       </span>
@@ -388,7 +611,7 @@ export default function SlamSolutionPage() {
                         href="/contact"
                         className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-cyan hover:text-brand-cyan/80 transition-colors"
                       >
-                        Request Sample Data <ArrowUpRight className="h-4 w-4" />
+                        {lang === "id" ? "Minta Sampel Data" : lang === "ch" ? "请求样本数据" : "Request Sample Data"} <ArrowUpRight className="h-4 w-4" />
                       </Link>
                     </div>
 
@@ -407,13 +630,18 @@ export default function SlamSolutionPage() {
           
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              Sectors served
+              {lang === "id" ? "Sektor yang dilayani" : lang === "ch" ? "服务行业" : "Sectors served"}
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              SLAM Industry Applications
+              {lang === "id" ? "Aplikasi Industri SLAM" : lang === "ch" ? "SLAM 行业应用" : "SLAM Industry Applications"}
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              Applying handheld spatial laser scans to map coordinate locations in enclosed environments.
+              {lang === "id"
+                ? "Menerapkan pemindaian laser spasial genggam untuk memetakan koordinat lokasi di lingkungan tertutup."
+                : lang === "ch"
+                  ? "应用手持式空间激光扫描对密闭复杂环境进行精确坐标建图。"
+                  : "Applying handheld spatial laser scans to map coordinate locations in enclosed environments."
+              }
             </p>
           </div>
 
@@ -449,15 +677,15 @@ export default function SlamSolutionPage() {
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           
           <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-            Project Planning
+            {t("contact.getInTouch")}
           </span>
 
           <h2 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-            Ready to Map Enclosed Sites?
+            {lang === "id" ? "Siap Memetakan Area Tertutup?" : lang === "ch" ? "准备好测绘封闭区域了吗？" : "Ready to Map Enclosed Sites?"}
           </h2>
 
-          <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
-            Discuss your surveying needs with our technical team. We provide tailored solutions and accurate estimations.
+          <p className="mt-4 text-gray-400 light:text-slate-650 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+            {lang === "id" ? "Diskusikan kebutuhan survei Anda dengan tim teknis kami. Kami menyediakan solusi yang disesuaikan dan estimasi yang akurat." : lang === "ch" ? "与我们的技术团队讨论您的测量需求。我们提供量身定制的解决方案和准确的估算。" : "Discuss your surveying needs with our technical team. We provide tailored solutions and accurate estimations."}
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
@@ -465,13 +693,13 @@ export default function SlamSolutionPage() {
               href="/contact"
               className="px-8 py-4 bg-brand-cyan text-white hover:bg-brand-cyan/90 font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(0,163,224,0.25)] flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
             >
-              Get in Touch <ArrowUpRight className="h-4 w-4" />
+              {t("nav.contact")} <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link
               href="/"
               className="px-8 py-4 border border-white/10 light:border-slate-200 hover:border-white/20 light:hover:border-slate-300 bg-white/5 light:bg-white hover:bg-white/10 text-white light:text-slate-800 rounded-lg transition-all duration-300 backdrop-blur-sm flex items-center justify-center text-sm uppercase tracking-wider"
             >
-              Return Home
+              {lang === "id" ? "Kembali ke Beranda" : lang === "ch" ? "返回首页" : "Return Home"}
             </Link>
           </div>
 

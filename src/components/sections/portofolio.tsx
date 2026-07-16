@@ -1,7 +1,12 @@
+"use client";
+
 import Counter from "../ui/counter";
 import { Map, CheckCircle2, Users2, Trophy } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function PortfolioStats() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative py-28 px-6 bg-[#070b12] light:bg-white overflow-hidden transition-colors duration-300">
       {/* Decorative Blur Blob */}
@@ -10,45 +15,44 @@ export default function PortfolioStats() {
       <div className="relative z-10 max-w-7xl mx-auto text-center">
         {/* Sub-badge */}
         <span className="text-[10px] font-bold tracking-widest text-amber-500 uppercase bg-amber-500/5 border border-amber-500/10 px-3 py-1 rounded-full">
-          Proven Performance
+          {t("portfolio.badge")}
         </span>
 
         {/* Section Heading */}
         <h2 className="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-          Our Impact in Numbers
+          {t("portfolio.title")}
         </h2>
 
         <p className="mt-4 text-sm md:text-base text-gray-400 light:text-slate-600 max-w-xl mx-auto leading-relaxed">
-          Delivering high-accuracy data and reliable insights across the
-          Indonesian archipelago.
+          {t("portfolio.subtitle")}
         </p>
 
         {/* Stats Grid */}
         <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <Stat
             icon={<Map className="h-6 w-6 text-amber-500" />}
-            label="Total Area Mapped"
+            label={t("portfolio.statArea")}
             value={125000}
             suffix="+ Ha"
           />
 
           <Stat
             icon={<CheckCircle2 className="h-6 w-6 text-amber-500" />}
-            label="Projects Completed"
+            label={t("portfolio.statProjects")}
             value={320}
             suffix="+"
           />
 
           <Stat
             icon={<Users2 className="h-6 w-6 text-amber-500" />}
-            label="Partner Companies"
+            label={t("portfolio.statPartners")}
             value={45}
             suffix="+"
           />
 
           <Stat
             icon={<Trophy className="h-6 w-6 text-amber-500" />}
-            label="Years of Experience"
+            label={t("portfolio.statExperience")}
             value={7}
             suffix="+"
           />

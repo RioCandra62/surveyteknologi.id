@@ -4,16 +4,60 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Camera, Layers, Focus, Maximize2 } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function PhotogrammetrySolutionPage() {
-  const specs = [
+  const { t, lang } = useTranslation();
+  const specs = lang === "id" ? [
+    { label: "Resolusi (GSD)", value: "Sub-1.0 cm / piksel" },
+    { label: "Sensor Kamera", value: "45 MP Full-Frame" },
+    { label: "Akurasi Horizontal", value: "1.5 cm RMSE" },
+    { label: "Akurasi Vertikal", value: "3.0 cm RMSE" },
+  ] : lang === "ch" ? [
+    { label: "分辨率 (GSD)", value: "低于 1.0 厘米/像素" },
+    { label: "相机传感器", value: "4500万像素全画幅" },
+    { label: "水平精度", value: "1.5 厘米 RMSE" },
+    { label: "垂直精度", value: "3.0 厘米 RMSE" },
+  ] : [
     { label: "Resolution (GSD)", value: "Sub-1.0 cm / pixel" },
     { label: "Camera Sensor", value: "45 MP Full-Frame" },
     { label: "Horizontal Accuracy", value: "1.5 cm RMSE" },
     { label: "Vertical Accuracy", value: "3.0 cm RMSE" },
   ];
 
-  const conceptualPillars = [
+  const conceptualPillars = lang === "id" ? [
+    {
+      icon: <Camera className="h-6 w-6 text-brand-cyan" />,
+      title: "Akuisisi Gambar Overlap Tinggi",
+      desc: "Misi direncanakan menggunakan perangkat lunak kontrol penerbangan otomatis, menangkap bingkai nadir atau miring secara terus menerus dengan overlap 80% depan dan 75% samping untuk mencegah celah visual."
+    },
+    {
+      icon: <Focus className="h-6 w-6 text-brand-cyan" />,
+      title: "Ground Control Points (GCP)",
+      desc: "Target visual kontras tinggi diukur di lapangan menggunakan receiver geodetik RTK GNSS. Koordinat ini menambatkan grid piksel fotogrametri ke koordinat global absolut."
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "Structure-from-Motion (SfM)",
+      desc: "Perangkat lunak fotogrametri mencocokkan ratusan titik kunci umum di seluruh foto yang tumpang tindih. Perhitungan triangulasi merekonstruksi geometri kamera dan bentuk 3D yang tepat."
+    },
+  ] : lang === "ch" ? [
+    {
+      icon: <Camera className="h-6 w-6 text-brand-cyan" />,
+      title: "高重叠图像采集",
+      desc: "使用自动航线控制软件规划任务，连续采集航向重叠度 80% 和旁向重叠度 75% 的正射或倾斜像片，以防止出现视觉缝隙。"
+    },
+    {
+      icon: <Focus className="h-6 w-6 text-brand-cyan" />,
+      title: "地面控制点 (GCP)",
+      desc: "在地面上使用大地测量级 RTK GNSS 接收机测量高对比度标志。这些坐标将摄影测量像素网格锚定到绝对全球坐标系。"
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "运动恢复结构 (SfM)",
+      desc: "摄影测量软件匹配重叠照片中数以百计的公共特征点。三角测量计算重构精确的相机几何形状和三维外形。"
+    },
+  ] : [
     {
       icon: <Camera className="h-6 w-6 text-brand-cyan" />,
       title: "High-Overlap Image Acquisition",
@@ -31,7 +75,121 @@ export default function PhotogrammetrySolutionPage() {
     },
   ];
 
-  const deliverables = [
+  const deliverables = lang === "id" ? [
+    {
+      id: "del-01",
+      title: "Peta Ortomosaik Resolusi Tinggi 2D",
+      desc: "Peta visual dua dimensi ter-ortorektifikasi dan ter-georeferensi yang disusun dari ribuan foto udara overlap tinggi. Mengoreksi distorsi lensa dan relief topografi untuk menghasilkan presisi pemetaan absolut pada resolusi sub-sentimeter.",
+      image: "/assets/image/photogrammetry/ortho.png",
+      tags: ["GeoTIFF / TIF", "Siap GIS"],
+      hudCode: "GSD: 0.6 cm/px // FILE: .TIF // PROJ: UTM_50S",
+      specs: [
+        { name: "Resolusi Tanah", value: "Sub-1 cm / piksel (GSD)" },
+        { name: "Sistem Koordinat", value: "UTM / WGS 84 (Georeferenced)" },
+        { name: "Tingkat Presisi", value: "± 2 cm Akurasi Horizontal" },
+        { name: "Format Perangkat Lunak", value: "GeoTIFF, KML/KMZ, ECW" },
+      ],
+    },
+    {
+      id: "del-02",
+      title: "Model Permukaan Digital (DSM)",
+      desc: "Representasi raster elevasi grid dari titik elevasi tertinggi di atas tanah kosong, menangkap ketinggian struktur bangunan, puncak vegetasi, dan objek permukaan lainnya.",
+      image: "/assets/image/photogrammetry/dsm.png",
+      tags: ["Digital Surface Model", "Elevation Raster"],
+      hudCode: "GSD: 1.2 cm // FORMAT: .TIF // V_ACC: 3.5cm",
+      specs: [
+        { name: "Ukuran Grid", value: "Akurasi grid 1.0cm hingga 5.0cm" },
+        { name: "Elevasi Terikat", value: "Referensi ortometrik terikat GCP" },
+        { name: "Output Format", value: "GeoTIFF (.TIF), XYZ, ASCII" },
+        { name: "Kegunaan Utama", value: "Perencanaan elevasi kota, pemodelan run-off" },
+      ],
+    },
+    {
+      id: "del-03",
+      title: "Model Medan Digital (DTM)",
+      desc: "Raster elevasi tanah kosong (bare-earth) yang dihasilkan dengan menyaring semua pohon, bangunan, dan fitur buatan dari DSM. Menyediakan profil topografi tanah dasar yang akurat.",
+      image: "/assets/image/photogrammetry/dtm.png",
+      tags: ["Digital Terrain Model", "Bare-Earth"],
+      hudCode: "GSD: 1.2 cm // REMOVED: TREES/BLDGS // GRID: 1m",
+      specs: [
+        { name: "Metode Filter", value: "Algoritma klasifikasi klasifikasi tanah" },
+        { name: "Interval Kontur", value: "Siap menghasilkan kontur 0.5m" },
+        { name: "Format File", value: "GeoTIFF, DEM, XYZ ASCII" },
+        { name: "Kegunaan Utama", value: "Desain sipil, pematangan tanah, hidrologi" },
+      ],
+    },
+    {
+      id: "del-04",
+      title: "3D Textured Mesh / Model 3D",
+      desc: "Model mesh tiga dimensi fotorealistik bertekstur tinggi yang direkonstruksi dari foto udara multi-sudut. Menyediakan kembaran digital visual interaktif untuk inspeksi jarak jauh.",
+      image: "/assets/image/photogrammetry/mesh.png",
+      tags: ["3D Mesh", "Digital Twin Model"],
+      hudCode: "POLY_COUNT: 24M // TEXTURE: 8K // FORMAT: .OBJ/.3MX",
+      specs: [
+        { name: "Presisi Tekstur", value: "Pemetaan tekstur resolusi tinggi 8K" },
+        { name: "Format File", value: "OBJ, FBX, 3MX (Cesium), glTF" },
+        { name: "Kompatibilitas", value: "Bentley ContextCapture, Sketchfab, Unity" },
+        { name: "Waktu Pengolahan", value: "Pasca-pemrosesan cepat (Sub-24 jam)" },
+      ],
+    },
+  ] : lang === "ch" ? [
+    {
+      id: "del-01",
+      title: "2D 高分辨率正射影像图",
+      desc: "由数千张高重叠度航空照片编译而成的地理参考、正射纠正二维视觉地图。纠正镜头畸变和地形起伏，从而在亚厘米级分辨率下产生绝对的测绘精度。",
+      image: "/assets/image/photogrammetry/ortho.png",
+      tags: ["GeoTIFF / TIF", "GIS 就绪"],
+      hudCode: "GSD: 0.6 cm/px // FILE: .TIF // PROJ: UTM_50S",
+      specs: [
+        { name: "地面分辨率", value: "亚厘米级 / 像素 (GSD)" },
+        { name: "坐标系", value: "UTM / WGS 84 (地理参考)" },
+        { name: "精度等级", value: "± 2 厘米水平精度" },
+        { name: "软件格式", value: "GeoTIFF, KML/KMZ, ECW" },
+      ],
+    },
+    {
+      id: "del-02",
+      title: "数字表面模型 (DSM)",
+      desc: "网格高程栅格图像，捕获裸地之上的所有建筑物、植被和表面物体的最高高程点。",
+      image: "/assets/image/photogrammetry/dsm.png",
+      tags: ["数字表面模型", "高程栅格"],
+      hudCode: "GSD: 1.2 cm // FORMAT: .TIF // V_ACC: 3.5cm",
+      specs: [
+        { name: "网格大小", value: "1.0厘米至5.0厘米网格精度" },
+        { name: "高程限制", value: "基于 GCP 限制的正交高程" },
+        { name: "输出格式", value: "GeoTIFF (.TIF), XYZ, ASCII" },
+        { name: "主要应用", value: "城市高程规划、径流建模" },
+      ],
+    },
+    {
+      id: "del-03",
+      title: "数字地形模型 (DTM)",
+      desc: "裸地高程栅格，通过从 DSM 中过滤掉所有树木、农作物和建筑物生成。提供准确的底层地面拓扑图。",
+      image: "/assets/image/photogrammetry/dtm.png",
+      tags: ["数字地形模型", "裸地表面"],
+      hudCode: "GSD: 1.2 cm // REMOVED: TREES/BLDGS // GRID: 1m",
+      specs: [
+        { name: "过滤方法", value: "地面分类分类算法" },
+        { name: "等高线间隔", value: "准备生成 0.5 米等高线" },
+        { name: "文件格式", value: "GeoTIFF, DEM, XYZ ASCII" },
+        { name: "主要应用", value: "土木设计、场地平整、水文学" },
+      ],
+    },
+    {
+      id: "del-04",
+      title: "3D 实景三维模型",
+      desc: "从多角度航空照片中重建的高清实景三维网格模型。为远程检测提供交互式的三维视觉数字孪生。",
+      image: "/assets/image/photogrammetry/mesh.png",
+      tags: ["3D 网格", "数字孪生模型"],
+      hudCode: "POLY_COUNT: 24M // TEXTURE: 8K // FORMAT: .OBJ/.3MX",
+      specs: [
+        { name: "纹理精度", value: "8K 高分辨率纹理映射" },
+        { name: "文件格式", value: "OBJ, FBX, 3MX (Cesium), glTF" },
+        { name: "软件兼容性", value: "Bentley ContextCapture, Sketchfab, Unity" },
+        { name: "交付时间", value: "快速后期处理 (24小时内)" },
+      ],
+    },
+  ] : [
     {
       id: "del-01",
       title: "2D High-Resolution Orthomosaic Map",
@@ -48,49 +206,83 @@ export default function PhotogrammetrySolutionPage() {
     },
     {
       id: "del-02",
-      title: "Digital Elevation Models (DEM/DTM/DSM)",
-      desc: "Digital elevation representations detailing terrain profiles and contours. Post-processing software filters out canopy and man-made structures to construct bare-earth models (DTM) or keeps them to analyze top-surface profiles (DSM) for hydrology and drainage planning.",
-      image: "/assets/image/bathymetry.png",
-      tags: ["DEM Raster", "Contour Ready"],
-      hudCode: "GRID: 1m x 1m // CONTOUR: 0.5m // VERT_ACC: 3cm",
+      title: "Digital Surface Model (DSM)",
+      desc: "Grid elevation raster capturing the top height of all structures, vegetation, and ground surfaces above the bare-earth.",
+      image: "/assets/image/photogrammetry/dsm.png",
+      tags: ["Digital Surface Model", "Elevation Raster"],
+      hudCode: "GSD: 1.2 cm // FORMAT: .TIF // V_ACC: 3.5cm",
       specs: [
-        { name: "Contour Interval", value: "0.25m to 1.0m (CAD Ready)" },
-        { name: "Elevation Model", value: "DSM (Top Surface) & DTM (Bare Earth)" },
-        { name: "Data Format", value: "GeoTIFF Raster, XYZ ASCII, DWG/DXF" },
-        { name: "Applications", value: "Civil Engineering, Cut & Fill, Drainage" },
+        { name: "Grid Size", value: "1.0cm to 5.0cm grid accuracy" },
+        { name: "Elevation Constraints", value: "Orthometric elevation GCP-constrained" },
+        { name: "Output Format", value: "GeoTIFF (.TIF), XYZ, ASCII" },
+        { name: "Primary Applications", value: "Urban height planning, run-off modeling" },
       ],
     },
     {
       id: "del-03",
-      title: "3D Textured Mesh Models",
-      desc: "High-fidelity photorealistic 3D mesh models detailing terrain conditions and vertical structural features. Ideal for interactive spatial visual reviews, mine site digital twins, and BIM (Building Information Modeling) pipelines.",
-      image: "/assets/image/photogrammetry.png",
-      tags: ["OBJ / FBX", "3D Tiles"],
-      hudCode: "POLY_COUNT: 12.8M // TEXTURE: 8K // COMPAT: CAD/BIM",
+      title: "Digital Terrain Model (DTM)",
+      desc: "A bare-earth elevation raster generated by filtering out all trees, crops, and buildings from the DSM. Yields accurate underlying terrain topography.",
+      image: "/assets/image/photogrammetry/dtm.png",
+      tags: ["Digital Terrain Model", "Bare-Earth"],
+      hudCode: "GSD: 1.2 cm // REMOVED: TREES/BLDGS // GRID: 1m",
       specs: [
-        { name: "Visual Quality", value: "Photorealistic 8K Textures" },
-        { name: "Polygon Density", value: "High-Density Triangulated Mesh" },
-        { name: "Industry Standard", value: "OBJ, FBX, 3D Tiles, Cesium" },
-        { name: "Applications", value: "Digital Twins, Virtual Walkthroughs" },
+        { name: "Filtering Method", value: "Ground class classification algorithms" },
+        { name: "Contour Interval", value: "Ready for 0.5m contour generation" },
+        { name: "File Format", value: "GeoTIFF, DEM, XYZ ASCII" },
+        { name: "Primary Applications", value: "Civil design, site grading, hydrology" },
       ],
     },
     {
       id: "del-04",
-      title: "Volumetric Stockpile Calculations",
-      desc: "High-precision bulk material stockpile volume computations (coal, ore, aggregates, earthworks) measured directly from 3D textured mesh surfaces. Delivers absolute inventory metrics and volumetric audits within hours.",
-      image: "/assets/image/bathymetry.png",
-      tags: ["CSV / PDF", "Volumetrics"],
-      hudCode: "VOL_ACCURACY: >98.5% // DATUM: BASEPLANE // COMP: 3D",
+      title: "3D Textured Mesh",
+      desc: "A photorealistic three-dimensional mesh model reconstructed from multi-angle aerial photographs. Yields interactive visual digital twins for remote auditing.",
+      image: "/assets/image/photogrammetry/mesh.png",
+      tags: ["3D Mesh", "Digital Twin Model"],
+      hudCode: "POLY_COUNT: 24M // TEXTURE: 8K // FORMAT: .OBJ/.3MX",
       specs: [
-        { name: "Volume Accuracy", value: ">98.5% Volumetric Precision" },
-        { name: "Calculation Method", value: "Base-plane Triangulated Volume" },
-        { name: "Output Reports", value: "PDF Report, CSV coordinates, Cross-sections" },
+        { name: "Texture Precision", value: "8K high-resolution texture mapping" },
+        { name: "File Formats", value: "OBJ, FBX, 3MX (Cesium), glTF" },
+        { name: "Software Compatibility", value: "Bentley ContextCapture, Sketchfab, Unity" },
         { name: "Turnaround Time", value: "Fast post-processing (Sub-24 hours)" },
       ],
     },
   ];
 
-  const useCases = [
+  const useCases = lang === "id" ? [
+    {
+      sector: "Pertambangan Terbuka",
+      use: "Perhitungan volume stockpile, tata letak batas, dan pemetaan lereng kuari untuk ulasan geologi struktural.",
+    },
+    {
+      sector: "Pertanian Presisi",
+      use: "Penghitungan tanaman pohon, pemetaan kesehatan tanaman menggunakan sensor NDVI, dan manajemen batas perkebunan.",
+    },
+    {
+      sector: "Sipil & Konstruksi",
+      use: "Tata letak perataan tanah, ulasan desain jalan, perhitungan volume massa tanah galian dan timbunan.",
+    },
+    {
+      sector: "Kadastral & Perencanaan Lahan",
+      use: "Tata letak batas visual terperinci untuk validasi kepemilikan tanah dan database pemetaan kadastral.",
+    },
+  ] : lang === "ch" ? [
+    {
+      sector: "露天采矿",
+      use: "矿料堆体积计算、边界规划以及用于结构地质审查的采石场剖面测绘。",
+    },
+    {
+      sector: "精准农业",
+      use: "果树计数、使用 NDVI 传感器进行作物健康图谱分析以及种植园边界管理。",
+    },
+    {
+      sector: "土木与建设",
+      use: "土地平整规划、道路设计审查、土石方挖填体积计算。",
+    },
+    {
+      sector: "地籍与土地规划",
+      use: "用于土地所有权验证和地籍测绘数据库的详细视觉边界测绘。",
+    },
+  ] : [
     {
       sector: "Open-Cut Mining",
       use: "Stockpile volume calculations, boundaries layout, and mapping of quarry faces for structural geology reviews.",
@@ -129,10 +321,10 @@ export default function PhotogrammetrySolutionPage() {
               href="/" 
               className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gray-400 light:text-slate-500 hover:text-white light:hover:text-slate-900 transition-colors"
             >
-              <ArrowLeft className="h-3 w-3" /> Back to Home
+              <ArrowLeft className="h-3 w-3" /> {t("contact.backToHome")}
             </Link>
             <span className="text-xs text-gray-600">/</span>
-            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">Solutions</span>
+            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">{t("nav.solutions")}</span>
             <span className="text-xs text-gray-600">/</span>
             <span className="text-xs text-gray-400 light:text-slate-500">Photogrammetry</span>
           </div>
@@ -149,14 +341,14 @@ export default function PhotogrammetrySolutionPage() {
             </span>
 
             <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-              Drone Photogrammetry <br />
+              {t("solutions.photogrammetry.title")} <br />
               <span className="bg-gradient-to-r from-brand-cyan via-sky-400 to-brand-blue bg-clip-text text-transparent">
-                & Orthomosaic Mapping
+                {lang === "id" ? "& Pemetaan Ortomosaik" : lang === "ch" ? "& 正射影像地图测绘" : "& Orthomosaic Mapping"}
               </span>
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-gray-300 light:text-slate-700 leading-relaxed font-light max-w-3xl">
-              Survey Teknologi Indonesia captures sub-centimeter resolution aerial photos and converts them into georeferenced orthomosaics, digital elevation models, and high-fidelity 3D meshes for civil engineering and mining.
+              {t("solutions.photogrammetry.desc")}
             </p>
           </div>
 
@@ -182,17 +374,27 @@ export default function PhotogrammetrySolutionPage() {
             {/* Description (Left) */}
             <div className="lg:col-span-6 space-y-6">
               <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-                Technology Overview
+                {lang === "id" ? "Ikhtisar Teknologi" : lang === "ch" ? "技术概述" : "Technology Overview"}
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                How Drone Photogrammetry Works
+                {lang === "id" ? "Bagaimana Fotogrametri Drone Bekerja" : lang === "ch" ? "无人机摄影测量如何工作" : "How Drone Photogrammetry Works"}
               </h2>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                Photogrammetry is the science of extracting geometric measurements from overlapping photographs. By flying a drone along structured grid flight lines and capturing hundreds of high-resolution visual frames, we compile datasets where each pixel is georeferenced. Using triangulation calculations and camera calibration parameters, photogrammetry software reconstructs detailed 3D models.
+                {lang === "id"
+                  ? "Fotogrametri adalah ilmu untuk mengekstrak pengukuran geometris dari foto udara yang tumpang tindih (overlap). Dengan menerbangkan drone di sepanjang jalur penerbangan grid terstruktur dan menangkap ratusan gambar visual resolusi tinggi, kami menyusun dataset di mana setiap piksel ter-georeferensi. Menggunakan perhitungan triangulasi dan parameter kalibrasi kamera, perangkat lunak fotogrametri merekonstruksi model 3D terperinci."
+                  : lang === "ch"
+                    ? "摄影测量是从重叠照片中提取几何测量的科学。通过使无人机沿着结构化的网格航线飞行并采集数百张高分辨率视觉像片，我们编译了每个像素都具有地理参考的数据集。利用三角测量计算和相机校准参数，摄影测量软件重建了详细的三维模型。"
+                    : "Photogrammetry is the science of extracting geometric measurements from overlapping photographs. By flying a drone along structured grid flight lines and capturing hundreds of high-resolution visual frames, we compile datasets where each pixel is georeferenced. Using triangulation calculations and camera calibration parameters, photogrammetry software reconstructs detailed 3D models."
+                }
               </p>
               <div className="border-l-2 border-brand-cyan/30 pl-4 py-1">
                 <p className="text-sm italic text-gray-300 light:text-slate-700">
-                  Unlike LiDAR which maps elevations beneath vegetation, photogrammetry captures color-realistic visual maps (orthomosaics) and textured surfaces, rendering highly detailed visible features.
+                  {lang === "id"
+                    ? "Berbeda dengan LiDAR yang memetakan elevasi di bawah vegetasi, fotogrametri menangkap peta visual realistis warna (ortomosaik) dan permukaan bertekstur, menghasilkan fitur visual yang sangat detail."
+                    : lang === "ch"
+                      ? "与映射植被下高程的 LiDAR 不同，摄影测量捕获色彩逼真的视觉地图（正射影像）和纹理表面，呈现高度详细的可见地物。"
+                      : "Unlike LiDAR which maps elevations beneath vegetation, photogrammetry captures color-realistic visual maps (orthomosaics) and textured surfaces, rendering highly detailed visible features."
+                  }
                 </p>
               </div>
             </div>
@@ -238,7 +440,7 @@ export default function PhotogrammetrySolutionPage() {
                 <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-brand-cyan/40" />
                 
                 <h4 className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-6">
-                  GSD & FLIGHT SPECIFICATIONS
+                  {lang === "id" ? "SPESIFIKASI GSD & PENERBANGAN" : lang === "ch" ? "GSD 与飞行规范" : "GSD & FLIGHT SPECIFICATIONS"}
                 </h4>
 
                 <div className="space-y-4">
@@ -246,7 +448,7 @@ export default function PhotogrammetrySolutionPage() {
                   <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-[#10b981]">
                     <div>
                       <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">ALTITUDE // 50m AGL</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Ground Resolution (GSD)</p>
+                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">{lang === "id" ? "Resolusi Tanah (GSD)" : lang === "ch" ? "地面分辨率 (GSD)" : "Ground Resolution (GSD)"}</p>
                     </div>
                     <span className="text-[10px] bg-[#10b981]/15 text-[#10b981] px-2 py-0.5 rounded font-mono">0.6 cm/px</span>
                   </div>
@@ -255,23 +457,28 @@ export default function PhotogrammetrySolutionPage() {
                   <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-[#3b82f6]">
                     <div>
                       <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">ALTITUDE // 100m AGL</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Ground Resolution (GSD)</p>
+                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">{lang === "id" ? "Resolusi Tanah (GSD)" : lang === "ch" ? "地面分辨率 (GSD)" : "Ground Resolution (GSD)"}</p>
                     </div>
                     <span className="text-[10px] bg-[#3b82f6]/15 text-[#3b82f6] px-2 py-0.5 rounded font-mono">1.2 cm/px</span>
                   </div>
 
-                  {/* Overlap */}
+                  {/* Altitude 150m */}
                   <div className="flex justify-between items-center bg-white/5 light:bg-slate-50 rounded-lg p-3 border-l-2 border-brand-cyan">
                     <div>
-                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">IMAGE OVERLAP RATES</span>
-                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">Frontal / Side overlap ratios</p>
+                      <span className="text-[10px] font-mono text-gray-400 light:text-slate-500">ALTITUDE // 150m AGL</span>
+                      <p className="text-xs font-bold text-white light:text-slate-900 mt-0.5">{lang === "id" ? "Resolusi Tanah (GSD)" : lang === "ch" ? "地面分辨率 (GSD)" : "Ground Resolution (GSD)"}</p>
                     </div>
-                    <span className="text-[10px] bg-brand-cyan/15 text-brand-cyan px-2 py-0.5 rounded font-mono">80% / 75%</span>
+                    <span className="text-[10px] bg-brand-cyan/15 text-brand-cyan px-2 py-0.5 rounded font-mono">1.8 cm/px</span>
                   </div>
                 </div>
 
                 <p className="mt-6 text-[10px] text-gray-500 text-center leading-relaxed">
-                  Higher overlaps and lower altitudes yield ultra-dense pixel maps with sub-centimeter GSD resolutions.
+                  {lang === "id"
+                    ? "Ketinggian penerbangan yang lebih rendah menghasilkan GSD yang lebih padat untuk pemetaan presisi tinggi."
+                    : lang === "ch"
+                      ? "更低的飞行高度产生更精细的地面采样距离 (GSD)，用于高精度制图。"
+                      : "Lower flight altitudes yield denser Ground Sampling Distance (GSD) for high-precision mapping."
+                  }
                 </p>
               </div>
             </div>
@@ -279,16 +486,26 @@ export default function PhotogrammetrySolutionPage() {
             {/* Content (Right) */}
             <div className="lg:col-span-7 space-y-6">
               <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-                Core Competency
+                {lang === "id" ? "Faktor Kunci Akurasi" : lang === "ch" ? "精度关键要素" : "Accuracy Key Factors"}
               </span>
               <h3 className="text-2xl md:text-3xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                Resolving Features with Sub-Centimeter GSD
+                {lang === "id" ? "Memahami Resolusi Piksel & Overlap Penerbangan" : lang === "ch" ? "了解像素分辨率与飞行重叠度" : "Understanding Pixel Resolution & Flight Overlap"}
               </h3>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                Ground Sampling Distance (GSD) defines the physical size of one image pixel on the ground. A GSD of 1 cm/pixel means that one pixel in our map represents 1 square centimeter of actual space. This high resolution lets us capture minute cracking on asphalt, structural features in mining, and pipeline layouts that satellite imagery cannot resolve.
+                {lang === "id"
+                  ? "Akurasi fotogrametri ditentukan oleh Ground Sampling Distance (GSD) dan persentase overlap foto. GSD mewakili ukuran fisik setiap piksel di tanah. Terbang lebih rendah meningkatkan resolusi piksel (GSD sub-sentimeter), memungkinkan pendeteksian retakan terkecil atau pergeseran tanah."
+                  : lang === "ch"
+                    ? "摄影测量的精度由地面采样距离 (GSD) 和照片重叠百分比决定。GSD 代表地面上每个像素的实际物理大小。在更低高度飞行会增加像素分辨率（达到亚厘米级 GSD），从而能够检测微小的裂缝或土地位移。"
+                    : "The accuracy of photogrammetry is determined by the Ground Sampling Distance (GSD) and the photo overlap percentage. GSD represents the physical size of each pixel on the ground. Flying lower increases the pixel resolution (sub-centimeter GSD), enabling the detection of tiny cracks or land shifts."
+                }
               </p>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                By pairing high-resolution full-frame cameras with geodetic RTK GPS systems, we coordinate each image shutter release. This provides highly accurate geospatial databases that integrate into engineering CAD designs and GIS layers.
+                {lang === "id"
+                  ? "Kami menjaga overlap depan minimal 80% dan overlap samping 75%. Overlap tinggi ini memastikan bahwa setiap titik di tanah ditangkap dari setidaknya 5-8 sudut kamera yang berbeda, menghilangkan titik buta dan distorsi di sekitar struktur vertikal."
+                  : lang === "ch"
+                    ? "我们维持至少 80% 的前向重叠和 75% 的旁向重叠。如此高的重叠度确保了地面上的每个点都能从至少 5 到 8 个不同的相机角度被捕获，从而消除了盲区以及垂直结构周围的畸变。"
+                    : "We maintain a minimum of 80% frontal overlap and 75% lateral overlap. This high overlap ensures that every point on the ground is captured from at least 5-8 different camera angles, eliminating blind spots and distortions around vertical structures."
+                }
               </p>
             </div>
 
@@ -517,6 +734,7 @@ export default function PhotogrammetrySolutionPage() {
       </section>
 
       {/* Call to Action Banner */}
+      {/* Call to Action Banner */}
       <section className="py-20 relative overflow-hidden border-t border-white/5 light:border-slate-200 transition-colors">
         <div className="absolute inset-0 bg-tech-grid opacity-20 pointer-events-none" />
         
@@ -526,15 +744,15 @@ export default function PhotogrammetrySolutionPage() {
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           
           <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-            Project Planning
+            {t("contact.getInTouch")}
           </span>
 
           <h2 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-            Ready to Map Your Project Site?
+            {lang === "id" ? "Siap Memetakan Lokasi Proyek Anda?" : lang === "ch" ? "准备好测绘您的项目地点了吗？" : "Ready to Map Your Project Site?"}
           </h2>
 
           <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
-            Discuss your surveying needs with our technical team. We provide tailored solutions and accurate estimations.
+            {lang === "id" ? "Diskusikan kebutuhan survei Anda dengan tim teknis kami. Kami menyediakan solusi yang disesuaikan dan estimasi yang akurat." : lang === "ch" ? "与我们的技术团队讨论您的测量需求。我们提供量身定制的解决方案和准确的估算。" : "Discuss your surveying needs with our technical team. We provide tailored solutions and accurate estimations."}
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
@@ -542,13 +760,13 @@ export default function PhotogrammetrySolutionPage() {
               href="/contact"
               className="px-8 py-4 bg-brand-cyan text-white hover:bg-brand-cyan/90 font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(0,163,224,0.25)] flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
             >
-              Get in Touch <ArrowUpRight className="h-4 w-4" />
+              {t("nav.contact")} <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link
               href="/"
               className="px-8 py-4 border border-white/10 light:border-slate-200 hover:border-white/20 light:hover:border-slate-300 bg-white/5 light:bg-white hover:bg-white/10 text-white light:text-slate-800 rounded-lg transition-all duration-300 backdrop-blur-sm flex items-center justify-center text-sm uppercase tracking-wider"
             >
-              Return Home
+              {lang === "id" ? "Kembali ke Beranda" : lang === "ch" ? "返回首页" : "Return Home"}
             </Link>
           </div>
 

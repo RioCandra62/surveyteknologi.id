@@ -4,16 +4,60 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Anchor, Waves, Layers, Compass } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function BathymetrySolutionPage() {
-  const specs = [
+  const { t, lang } = useTranslation();
+  const specs = lang === "id" ? [
+    { label: "Akurasi Kedalaman", value: "Sub-5 cm RMSE" },
+    { label: "Frekuensi Transduser", value: "Ganda (50 / 200 kHz)" },
+    { label: "Rentang Kedalaman", value: "Rentang 0.3m hingga 150m" },
+    { label: "Sistem Platform", value: "Autonomous Surface Vehicle (ASV)" },
+  ] : lang === "ch" ? [
+    { label: "深度精度", value: "低于 5 厘米 RMSE" },
+    { label: "换能器频率", value: "双频 (50 / 200 kHz)" },
+    { label: "深度范围", value: "0.3米至150米范围" },
+    { label: "平台系统", value: "自主无人船 (ASV)" },
+  ] : [
     { label: "Depth Accuracy", value: "Sub-5 cm RMSE" },
     { label: "Transducer Freq.", value: "Dual (50 / 200 kHz)" },
     { label: "Depth Range", value: "0.3m to 150m Range" },
     { label: "Platform System", value: "Autonomous Surface Vehicle (ASV)" },
   ];
 
-  const conceptualPillars = [
+  const conceptualPillars = lang === "id" ? [
+    {
+      icon: <Waves className="h-6 w-6 text-brand-cyan" />,
+      title: "Pemeruman Gema Akustik",
+      desc: "Transduser frekuensi tinggi memancarkan pulsa akustik ke bawah, memetakan kedalaman air berdasarkan waktu pantulan sinyal gema dari dasar laut."
+    },
+    {
+      icon: <Anchor className="h-6 w-6 text-brand-cyan" />,
+      title: "Sound Velocity Profile (SVP)",
+      desc: "Kolom suhu dan salinitas air diukur untuk menghitung variasi kecepatan akustik, memastikan perhitungan kedalaman yang tepat di berbagai kerapatan air."
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "Koreksi Pasang Surut RTK",
+      desc: "Penerima base RTK melacak ketinggian pasang surut secara real-time, secara dinamis mengurangi pergeseran pasang surut untuk menghasilkan elevasi dasar laut yang absolut."
+    },
+  ] : lang === "ch" ? [
+    {
+      icon: <Waves className="h-6 w-6 text-brand-cyan" />,
+      title: "声学回声测深",
+      desc: "高频换能器向下发射声学脉冲，根据从海底反射回来的回波信号时间映射水深。"
+    },
+    {
+      icon: <Anchor className="h-6 w-6 text-brand-cyan" />,
+      title: "声速剖面 (SVP)",
+      desc: "测量水温和盐度柱以计算声速变化，确保在不同水体密度下获得精确的深度计算。"
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-brand-cyan" />,
+      title: "RTK 潮汐改正",
+      desc: "有源基准站接收机实时追踪潮位高度，动态扣除天文潮位偏差，从而获得绝对的海底高程。"
+    },
+  ] : [
     {
       icon: <Waves className="h-6 w-6 text-brand-cyan" />,
       title: "Acoustic Echo Sounding",
@@ -31,7 +75,93 @@ export default function BathymetrySolutionPage() {
     },
   ];
 
-  const deliverables = [
+  const deliverables = lang === "id" ? [
+    {
+      id: "del-01",
+      title: "Permukaan 3D Dasar Laut & Sungai",
+      desc: "Permukaan digital 3D berdensitas tinggi yang merinci bentuk dan topografi dasar sungai, danau, atau laut pesisir. Sangat penting untuk konstruksi teknik dan tata letak struktural.",
+      image: "/assets/image/bathymmetry/result.jpeg",
+      tags: ["Raster GeoTIFF", "Permukaan 3D"],
+      hudCode: "FREQ: 200kHz // DEPTH: 14.8m // VERT_ACC: 3.2cm",
+      specs: [
+        { name: "Jarak Kisi (Grid)", value: "Grid resolusi 0.5m hingga 2.0m" },
+        { name: "Referensi Koordinat", value: "Zona UTM / Datum WGS 84" },
+        { name: "Tingkat Presisi", value: "Presisi Vertikal Sub-5 cm" },
+        { name: "Format Output", value: "GeoTIFF, ASCII Grid, Data XYZ" },
+      ],
+    },
+    {
+      id: "del-02",
+      title: "Peta Kontur Batimetri",
+      desc: "Kontur elevasi presisi tinggi yang merinci kedalaman bawah air. Penting untuk verifikasi pengerukan pelabuhan dan penyusunan peta navigasi.",
+      image: "https://www.whiteclouds.com/wp-content/uploads/2023/04/Lake-Huron-Bathymetric-Maps.jpg",
+      tags: ["Kontur CAD", "Format DXF / DWG"],
+      hudCode: "INTERVAL: 0.5m // FILE: .DWG // REF: MSL (MEAN)",
+      specs: [
+        { name: "Interval Kontur", value: "Interval 0.2m, 0.5m, 1.0m" },
+        { name: "Datum Tinggi", value: "Mean Sea Level (MSL) / Chart Datum" },
+        { name: "Format Gambar", value: "AutoCAD DWG, DXF, SHP Shapefile" },
+        { name: "Validasi Lapangan", value: "Dikalibrasi dengan batu duga manual (leadlines)" },
+      ],
+    },
+    {
+      id: "del-03",
+      title: "Profil Penampang Sungai",
+      desc: "Profil penampang terperinci yang memvisualisasikan offset kedalaman pada stasiun teknik tertentu. Ideal untuk analisis gerusan di sekitar pilar jembatan dan pemantauan struktural bendungan.",
+      image: "/assets/image/bathymmetry/result2.jpeg",
+      tags: ["Laporan PDF", "Penampang Melintang"],
+      hudCode: "STATION: KM 12+400 // WIDTH: 80m // SCALE: 1:200",
+      specs: [
+        { name: "Lebar Penampang", value: "Profil lebar hingga 500 meter" },
+        { name: "Interval Sampel", value: "Interval 10m, 20m, 50m di sepanjang jalur" },
+        { name: "Format Profil", value: "AutoCAD DWG, Excel CSV, Bagan PDF" },
+        { name: "Deteksi Gerusan", value: "Membandingkan profil gerusan dari waktu ke waktu" },
+      ],
+    },
+  ] : lang === "ch" ? [
+    {
+      id: "del-01",
+      title: "3D 海床与河床三维表面",
+      desc: "高密度 3D 数字表面，详细展示河床、湖泊或沿海海床的形状和地形。对于工程建设和结构布局至关重要。",
+      image: "/assets/image/bathymmetry/result.jpeg",
+      tags: ["GeoTIFF 栅格", "3D 表面"],
+      hudCode: "FREQ: 200kHz // DEPTH: 14.8m // VERT_ACC: 3.2cm",
+      specs: [
+        { name: "网格间距", value: "0.5米至2.0米分辨率网格" },
+        { name: "坐标参考", value: "UTM 投影带 / WGS 84 基准" },
+        { name: "精度级别", value: "亚厘米级垂直精度" },
+        { name: "输出格式", value: "GeoTIFF, ASCII Grid, XYZ 数据" },
+      ],
+    },
+    {
+      id: "del-02",
+      title: "等深线图",
+      desc: "显示水下深度的精确高程等高线。对于港口疏浚验证和导航图编制必不可少。",
+      image: "https://www.whiteclouds.com/wp-content/uploads/2023/04/Lake-Huron-Bathymetric-Maps.jpg",
+      tags: ["CAD 等高线", "DXF / DWG 格式"],
+      hudCode: "INTERVAL: 0.5m // FILE: .DWG // REF: MSL (MEAN)",
+      specs: [
+        { name: "等深线间隔", value: "0.2米、0.5米、1.0米间隔" },
+        { name: "高程基准", value: "平均海平面 (MSL) / 海图基准面" },
+        { name: "图纸格式", value: "AutoCAD DWG, DXF, SHP Shapefile" },
+        { name: "核验方法", value: "使用手动测深锤进行校准" },
+      ],
+    },
+    {
+      id: "del-03",
+      title: "河床横断面剖面图",
+      desc: "可视化特定工程测站水深偏移的详细断面剖面图。非常适合桥墩周围的冲刷分析和水坝结构监测。",
+      image: "/assets/image/bathymmetry/result2.jpeg",
+      tags: ["PDF 报告", "横断面"],
+      hudCode: "STATION: KM 12+400 // WIDTH: 80m // SCALE: 1:200",
+      specs: [
+        { name: "断面宽度", value: "宽达 500 米的断面剖面" },
+        { name: "采样间隔", value: "沿里程桩 10米、20米、50米间隔" },
+        { name: "剖面格式", value: "AutoCAD DWG, Excel CSV, PDF 图表" },
+        { name: "冲刷检测", value: "对比不同时间的冲刷演变剖面" },
+      ],
+    },
+  ] : [
     {
       id: "del-01",
       title: "3D Seabed & Riverbed Surface",
@@ -74,23 +204,43 @@ export default function BathymetrySolutionPage() {
         { name: "Scour Detection", value: "Compares scour profiles over time" },
       ],
     },
-    // {
-    //   id: "del-04",
-    //   title: "Volumetric Siltation Analysis",
-    //   desc: "Quantifies underwater siltation accumulation over time, calculating exact dredging cut-and-fill soil mass volumes for port channels and dams.",
-    //   image: "/assets/image/bathymetry.png",
-    //   tags: ["CSV / PDF", "Volumetrics"],
-    //   hudCode: "SILT_VOLUME: 42,400 m³ // ACCURACY: >98% // GRID",
-    //   specs: [
-    //     { name: "Volume Precision", value: "Engineering-grade cubic calculations" },
-    //     { name: "Reference Datum", value: "Design Dredging Depth (Baseplane)" },
-    //     { name: "Silt Thickness Map", value: "Isopach thickness raster files" },
-    //     { name: "Turnaround Time", value: "Completed within 48 hours" },
-    //   ],
-    // },
   ];
 
-  const useCases = [
+  const useCases = lang === "id" ? [
+    {
+      sector: "Pengerukan Pelabuhan",
+      use: "Survei sebelum dan sesudah pengerukan untuk memverifikasi kedalaman alur navigasi dan menghitung volume sedimentasi.",
+    },
+    {
+      sector: "Analisis Gerusan Jembatan",
+      use: "Pemetaan lubang gerusan di sekitar pilar dan fondasi jembatan untuk memantau risiko erosi struktural.",
+    },
+    {
+      sector: "Kapasitas Waduk",
+      use: "Pemetaan volumetrik waduk bendungan untuk menghitung perubahan kapasitas penyimpanan air akibat penumpukan sedimen.",
+    },
+    {
+      sector: "Pipa Bawah Laut",
+      use: "Pemetaan dasar laut yang mendetail di sepanjang rute pipa bawah laut yang diusulkan untuk mengidentifikasi rintangan.",
+    },
+  ] : lang === "ch" ? [
+    {
+      sector: "港口疏浚",
+      use: "疏浚前和疏浚后测量，以验证导航通道深度并计算淤积量。",
+    },
+    {
+      sector: "桥梁冲刷分析",
+      use: "绘制桥墩和基础周围的冲刷坑，以监测结构侵蚀风险。",
+    },
+    {
+      sector: "水库容量",
+      use: "大坝水库体积图，以计算由于泥沙淤积引起的水库蓄水容量变化。",
+    },
+    {
+      sector: "海底管道",
+      use: "沿着拟建的海底管道路线进行详细的海底制图以识别障碍物。",
+    },
+  ] : [
     {
       sector: "Port Dredging",
       use: "Pre-dredge and post-dredge surveys to verify navigation channel depths and compute siltation volumes.",
@@ -125,10 +275,10 @@ export default function BathymetrySolutionPage() {
               href="/" 
               className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gray-400 light:text-slate-500 hover:text-white light:hover:text-slate-900 transition-colors"
             >
-              <ArrowLeft className="h-3 w-3" /> Back to Home
+              <ArrowLeft className="h-3 w-3" /> {t("contact.backToHome")}
             </Link>
             <span className="text-xs text-gray-600">/</span>
-            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">Solutions</span>
+            <span className="text-xs text-brand-cyan font-bold tracking-wider uppercase">{t("nav.solutions")}</span>
             <span className="text-xs text-gray-600">/</span>
             <span className="text-xs text-gray-400 light:text-slate-500">Bathymetry</span>
           </div>
@@ -145,14 +295,14 @@ export default function BathymetrySolutionPage() {
             </span>
 
             <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white light:text-slate-900 leading-tight">
-              Bathymetric Survey <br />
+              {t("solutions.bathymetry.title")} <br />
               <span className="bg-gradient-to-r from-brand-cyan via-sky-400 to-brand-blue bg-clip-text text-transparent">
-                & Underwater Mapping
+                {lang === "id" ? "& Pemetaan Bawah Air" : lang === "ch" ? "& 水下测绘" : "& Underwater Mapping"}
               </span>
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-gray-300 light:text-slate-700 leading-relaxed font-light max-w-3xl">
-              Mapping sub-surface terrain topography with dual-frequency echo sounders and autonomous survey vessels, delivering high-accuracy underwater contours for ports, dams, and bridges.
+              {t("solutions.bathymetry.desc")}
             </p>
           </div>
 
@@ -177,17 +327,27 @@ export default function BathymetrySolutionPage() {
             
             <div className="lg:col-span-6 space-y-6">
               <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-                Technology Overview
+                {lang === "id" ? "Ikhtisar Teknologi" : lang === "ch" ? "技术概述" : "Technology Overview"}
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-                Underwater Acoustic Profiling
+                {lang === "id" ? "Pencitraan Akustik Bawah Air" : lang === "ch" ? "水下声学剖面测量" : "Underwater Acoustic Profiling"}
               </h2>
               <p className="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-                Bathymetry mappings rely on acoustic remote sensing. Echo sounders emit calibrated audio pulses downward, registering the time offsets of the echoes returning from the bed floor. Pairing these depth soundings with geodetic RTK GPS positions yields high-precision coordinate elevation profiles of the sub-surface topography.
+                {lang === "id"
+                  ? "Pemetaan batimetri mengandalkan penginderaan jauh akustik. Echo sounder memancarkan pulsa audio terkalibrasi ke bawah, mencatat perbedaan waktu dari gema yang memantul dari dasar perairan. Memadukan pengukuran kedalaman ini dengan posisi RTK GPS menghasilkan profil elevasi koordinat presisi tinggi dari topografi bawah air."
+                  : lang === "ch"
+                    ? "水下测深测量依赖于声学遥感。回声测深仪向下发射校准声学脉冲，记录从水底反射回来的回波时间差。将这些深度测量与大地测量级 RTK GPS 位置相结合，可以获得水下地形的高精度坐标高程剖面。"
+                    : "Bathymetry mappings rely on acoustic remote sensing. Echo sounders emit calibrated audio pulses downward, registering the time offsets of the echoes returning from the bed floor. Pairing these depth soundings with geodetic RTK GPS positions yields high-precision coordinate elevation profiles of the sub-surface topography."
+                }
               </p>
               <div className="border-l-2 border-brand-cyan/30 pl-4 py-1">
                 <p className="text-sm italic text-gray-300 light:text-slate-700">
-                  Deploying unmanned autonomous surface vehicles (ASVs) allows us to survey shallow-water areas and hazardous tailing dams safely, avoiding risks to human crews.
+                  {lang === "id"
+                    ? "Mengerahkan unmanned autonomous surface vehicles (ASVs) memungkinkan kami mensurvei area air dangkal dan bendungan tailing yang berbahaya dengan aman, menghindari risiko bagi kru manusia."
+                    : lang === "ch"
+                      ? "部署自主无人探测船 (ASV) 使我们能够安全地测量浅水区域和危险的尾矿坝，避免了外场人员的安全风险。"
+                      : "Deploying unmanned autonomous surface vehicles (ASVs) allows us to survey shallow-water areas and hazardous tailing dams safely, avoiding risks to human crews."
+                  }
                 </p>
               </div>
             </div>
@@ -224,13 +384,13 @@ export default function BathymetrySolutionPage() {
           
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-              Industrial Hardware
+              {lang === "id" ? "Perangkat Keras Industri" : lang === "ch" ? "工业硬件" : "Industrial Hardware"}
             </span>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-              Hydrographic Survey Fleet
+              {lang === "id" ? "Armada Survei Hidrografi" : lang === "ch" ? "水文测量船队" : "Hydrographic Survey Fleet"}
             </h2>
             <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-              We operate robotic autonomous surface vessels and dual-frequency transducers to capture accurate shallow water profiles.
+              {lang === "id" ? "Kami mengoperasikan kapal permukaan otonom robotik dan transduser dual-frekuensi untuk menangkap profil air dangkal yang akurat." : lang === "ch" ? "我们运行机器人自主无人船和双频换能器，以获取精准的浅水剖面。" : "We operate robotic autonomous surface vessels and dual-frequency transducers to capture accurate shallow water profiles."}
             </p>
           </div>
 
@@ -243,16 +403,25 @@ export default function BathymetrySolutionPage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">01</div>
               <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">Autonomous Surface Vehicle (ASV)</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                Our unmanned hydrographic surveying vessel. Features autonomous waypoint navigation mapping grids, a dual-thruster power train, and up to 4 hours of active operation. Ideal for environmental surveying in shallow tailing ponds, river estuaries, and dams.
+                {lang === "id"
+                  ? "Kapal survei hidrografi tanpa awak kami. Dilengkapi navigasi titik acuan (waypoint) otonom, sistem propulsi pendorong ganda, dan waktu operasi aktif hingga 4 jam. Ideal untuk survei lingkungan di kolam tailing dangkal, muara sungai, dan bendungan."
+                  : lang === "ch"
+                    ? "我们的无人水文测量船。具备自主航点导航测绘网格、双推进器动力系统以及长达 4 小时的作业时间。非常适合在浅水尾矿库、河口和水坝进行环境测量。"
+                    : "Our unmanned hydrographic surveying vessel. Features autonomous waypoint navigation mapping grids, a dual-thruster power train, and up to 4 hours of active operation. Ideal for environmental surveying in shallow tailing ponds, river estuaries, and dams."
+                }
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block">Operation Time</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Up to 4 hours</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Waktu Operasi" : lang === "ch" ? "作业时间" : "Operation Time"}</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">
+                    {lang === "id" ? "Hingga 4 jam" : lang === "ch" ? "长达 4 小时" : "Up to 4 hours"}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">Navigation Link</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">Autopilot / RTK Route</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Tautan Navigasi" : lang === "ch" ? "导航方式" : "Navigation Link"}</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">
+                    {lang === "id" ? "Autopilot / Rute RTK" : lang === "ch" ? "自动驾驶 / RTK 航线" : "Autopilot / RTK Route"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -262,9 +431,14 @@ export default function BathymetrySolutionPage() {
               <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
               
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 text-brand-cyan font-bold text-sm">02</div>
-              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">Dual-Frequency Echo Sounder</h3>
+              <h3 className="mt-6 text-xl font-bold text-white light:text-slate-900">{lang === "id" ? "Echo Sounder Dual-Frekuensi" : lang === "ch" ? "双频回声测深仪" : "Dual-Frequency Echo Sounder"}</h3>
               <p className="mt-3 text-sm text-gray-400 light:text-slate-600 leading-relaxed flex-grow">
-                A high-precision acoustic depth sensor operating simultaneously at 50 kHz and 200 kHz frequencies. The high frequency tracks the upper silt boundaries, while the low frequency penetrates soft mud to capture the hard bottom surface layer.
+                {lang === "id"
+                  ? "Sensor kedalaman akustik presisi tinggi yang beroperasi secara simultan pada frekuensi 50 kHz dan 200 kHz. Frekuensi tinggi melacak batas lumpur atas, sedangkan frekuensi rendah menembus lumpur lunak untuk menangkap lapisan permukaan keras dasar perairan."
+                  : lang === "ch"
+                    ? "高精度声学深度传感器，可同时工作在 50 kHz 和 200 kHz 频率。高频追踪上层淤泥边界，而低频穿透软泥以捕获坚硬的底部表面层。"
+                    : "A high-precision acoustic depth sensor operating simultaneously at 50 kHz and 200 kHz frequencies. The high frequency tracks the upper silt boundaries, while the low frequency penetrates soft mud to capture the hard bottom surface layer."
+                }
               </p>
               <div className="mt-6 pt-4 border-t border-white/5 light:border-slate-200 grid grid-cols-2 gap-4 text-xs">
                 <div>
@@ -272,8 +446,10 @@ export default function BathymetrySolutionPage() {
                   <span className="font-bold text-white light:text-slate-900 mt-1 block">50 kHz & 200 kHz</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block">Sensor Depth Range</span>
-                  <span className="font-bold text-white light:text-slate-900 mt-1 block">0.3m to 150m soundings</span>
+                  <span className="text-gray-500 block">{lang === "id" ? "Rentang Kedalaman Sensor" : lang === "ch" ? "传感器测深范围" : "Sensor Depth Range"}</span>
+                  <span className="font-bold text-white light:text-slate-900 mt-1 block">
+                    {lang === "id" ? "Pemeruman 0.3m hingga 150m" : lang === "ch" ? "0.3米至150米水深" : "0.3m to 150m soundings"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -439,15 +615,15 @@ export default function BathymetrySolutionPage() {
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           
           <span className="text-[10px] font-bold tracking-widest text-brand-cyan uppercase bg-brand-cyan/5 border border-brand-cyan/10 px-3 py-1 rounded-full">
-            Project Planning
+            {t("contact.getInTouch")}
           </span>
 
           <h2 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-extrabold text-white light:text-slate-900 tracking-tight leading-tight">
-            Ready to Map Your Water Bodies?
+            {lang === "id" ? "Siap Memetakan Area Air Anda?" : lang === "ch" ? "准备好测绘您的水体了吗？" : "Ready to Map Your Water Bodies?"}
           </h2>
 
           <p className="mt-4 text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
-            Discuss your surveying needs with our technical team. We provide tailored solutions and accurate estimations.
+            {lang === "id" ? "Diskusikan kebutuhan survei Anda dengan tim teknis kami. Kami menyediakan solusi yang disesuaikan dan estimasi yang akurat." : lang === "ch" ? "与我们的技术团队讨论您的测量需求。我们提供量身定制的解决方案和准确的估算。" : "Discuss your surveying needs with our technical team. We provide tailored solutions and accurate estimations."}
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
@@ -455,13 +631,13 @@ export default function BathymetrySolutionPage() {
               href="/contact"
               className="px-8 py-4 bg-brand-cyan text-white hover:bg-brand-cyan/90 font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(0,163,224,0.25)] flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
             >
-              Get in Touch <ArrowUpRight className="h-4 w-4" />
+              {t("nav.contact")} <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link
               href="/"
               className="px-8 py-4 border border-white/10 light:border-slate-200 hover:border-white/20 light:hover:border-slate-300 bg-white/5 light:bg-white hover:bg-white/10 text-white light:text-slate-800 rounded-lg transition-all duration-300 backdrop-blur-sm flex items-center justify-center text-sm uppercase tracking-wider"
             >
-              Return Home
+              {lang === "id" ? "Kembali ke Beranda" : lang === "ch" ? "返回首页" : "Return Home"}
             </Link>
           </div>
 

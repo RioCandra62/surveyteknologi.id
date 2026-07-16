@@ -1,63 +1,70 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-
-const solutions = [
-  {
-    title: "LiDAR Survey",
-    category: "Aerial Laser",
-    description:
-      "High-density point cloud data for terrain modeling, deformation analysis, and vegetation penetration.",
-    image:
-      "https://halorobotics.com/wp-content/uploads/2025/11/dji-zenmuse-l3-halo-robotics-1-915x686.jpg",
-    href: "/solutions/lidar",
-  },
-  {
-    title: "Photogrammetry",
-    category: "3D Reconstruction",
-    description:
-      "High-resolution orthomosaic and 3D surface models for mapping, inspection, and asset monitoring.",
-    image: "/assets/image/photogrammetry.png",
-    href: "/solutions/photogrammetry",
-  },
-  {
-    title: "Bathymetry",
-    category: "Hydrographic Survey",
-    description:
-      "Accurate shallow-water and coastal bathymetric survey for marine and infrastructure projects.",
-    image: "/assets/image/bathymetry.png",
-    href: "/solutions/bathymetry",
-  },
-  {
-    title: "Spatial Camera",
-    category: "Digital Twin",
-    description:
-      "Digital twin creation and spatial mapping using advanced spatial camera technology.",
-    image:
-      "https://www.laserscanning-europe.com/sites/default/files/images/hardware/PortalCam_1.jpg",
-    href: "/solutions/spatial-camera",
-  },
-  {
-    title: "Simultaneous Localization and Mapping (SLAM)",
-    category: "GPS-Denied Mapping",
-    description:
-      "Real-time 3D mapping and localization in GPS-denied environments using SLAM technology.",
-    image:
-      "https://www.laserscanning-europe.com/sites/default/files/images/content/SLAM_Visualisierung_01.jpg",
-    href: "/solutions/slam",
-  },
-  {
-    title: "Terrestrial Mapping",
-    category: "Land Survey",
-    description:
-      "High-precision terrestrial mapping for construction, mining, and infrastructure projects.",
-    image:
-      "https://images.unsplash.com/photo-1628158145409-9e222b56cc0b?q=80&w=2143&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    href: "/solutions/terrastrial-mapping",
-  },
-];
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function SolutionsList() {
+  const { t } = useTranslation();
+
+  const solutions = [
+    {
+      title: t("solutions.lidar.title"),
+      category: t("solutions.lidar.category"),
+      description: t("solutions.lidar.desc"),
+      image:
+        "https://halorobotics.com/wp-content/uploads/2025/11/dji-zenmuse-l3-halo-robotics-1-915x686.jpg",
+      href: "/solutions/lidar",
+    },
+    {
+      title: t("solutions.photogrammetry.title"),
+      category: t("solutions.photogrammetry.category"),
+      description: t("solutions.photogrammetry.desc"),
+      image: "/assets/image/photogrammetry.png",
+      href: "/solutions/photogrammetry",
+    },
+    {
+      title: t("solutions.bathymetry.title"),
+      category: t("solutions.bathymetry.category"),
+      description: t("solutions.bathymetry.desc"),
+      image: "/assets/image/bathymetry.png",
+      href: "/solutions/bathymetry",
+    },
+    {
+      title: t("solutions.spatialCamera.title"),
+      category: t("solutions.spatialCamera.category"),
+      description: t("solutions.spatialCamera.desc"),
+      image:
+        "https://www.laserscanning-europe.com/sites/default/files/images/hardware/PortalCam_1.jpg",
+      href: "/solutions/spatial-camera",
+    },
+    {
+      title: t("solutions.slam.title"),
+      category: t("solutions.slam.category"),
+      description: t("solutions.slam.desc"),
+      image:
+        "https://www.laserscanning-europe.com/sites/default/files/images/content/SLAM_Visualisierung_01.jpg",
+      href: "/solutions/slam",
+    },
+    {
+      title: t("solutions.terrestrial.title"),
+      category: t("solutions.terrestrial.category"),
+      description: t("solutions.terrestrial.desc"),
+      image:
+        "https://images.unsplash.com/photo-1628158145409-9e222b56cc0b?q=80&w=2143&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      href: "/solutions/terrastrial-mapping",
+    },
+    {
+      title: t("solutions.powerline.title"),
+      category: t("solutions.powerline.category"),
+      description: t("solutions.powerline.desc"),
+      image:
+        "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
+      href: "/solutions/powerline-inspection",
+    },
+  ];
+
   return (
     <section className="bg-[#090d16] light:bg-slate-50 pb-32 px-6 transition-colors duration-300">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -101,7 +108,7 @@ export default function SolutionsList() {
                   href={item.href}
                   className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-500 hover:text-amber-400 transition-colors"
                 >
-                  Explore Solution
+                  {t("solutions.exploreBtn")}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>

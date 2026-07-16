@@ -60,7 +60,7 @@ export default function SolutionsList() {
       category: t("solutions.powerline.category"),
       description: t("solutions.powerline.desc"),
       image:
-        "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
+        "https://www.hbjinyong.com/wp-content/uploads/2021/08/transmission-line-post.jpg",
       href: "/solutions/powerline-inspection",
     },
   ];

@@ -45,15 +45,17 @@ export default function Navbar() {
   }, []);
 
   const toggleTheme = () => {
-    if (theme === "dark") {
-      setTheme("light");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-    } else {
-      setTheme("dark");
-      document.documentElement.classList.remove("light");
-      localStorage.setItem("theme", "dark");
-    }
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === "dark" ? "light" : "dark";
+      if (newTheme === "light") {
+        document.documentElement.classList.add("light");
+        localStorage.setItem("theme", "light");
+      } else {
+        document.documentElement.classList.remove("light");
+        localStorage.setItem("theme", "dark");
+      }
+      return newTheme;
+    });
   };
 
   const { t } = useTranslation();
@@ -62,6 +64,7 @@ export default function Navbar() {
     { name: t("nav.home"), href: "/" },
     { name: t("nav.solutions"), href: "/#solutions" },
     { name: t("nav.ourFleet"), href: "/our-fleet" },
+    // { name: t("nav.gallery"), href: "/coming-soon" },
     { name: t("nav.aboutUs"), href: "/#about" },
     { name: t("nav.contact"), href: "/contact" },
   ];
@@ -114,6 +117,7 @@ export default function Navbar() {
             
             {/* Theme Toggle Button */}
             <button
+              type="button"
               onClick={toggleTheme}
               className="rounded-full border border-white/5 light:border-slate-200/80 bg-white/5 light:bg-slate-100 p-2 text-gray-400 light:text-slate-600 hover:text-white light:hover:text-slate-900 transition-colors focus:outline-none cursor-pointer"
               aria-label="Toggle theme"
@@ -173,6 +177,7 @@ export default function Navbar() {
             
             {/* Theme Toggle Button Mobile */}
             <button
+              type="button"
               onClick={toggleTheme}
               className="rounded-full border border-white/5 light:border-slate-200 bg-white/5 light:bg-slate-100 p-2 text-gray-400 light:text-slate-600 hover:text-white focus:outline-none"
               aria-label="Toggle theme"

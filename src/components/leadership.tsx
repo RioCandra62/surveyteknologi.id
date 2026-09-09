@@ -55,11 +55,11 @@ export default function Leadership() {
             {/* Main Picture Frame */}
             <div className="relative overflow-hidden rounded-2xl border border-white/10 light:border-slate-200 bg-white/5 light:bg-white p-2 backdrop-blur-sm shadow-2xl transition-all duration-300 group-hover:border-amber-500/20 group-hover:scale-[1.01]">
               <Image
-                src="/assets/image/dirut.jpg"
+                src="/assets/image/direktur_sti.png"
                 alt="Bapak Hindrawan HM - Direktur Utama"
                 width={320}
                 height={400}
-                className="rounded-xl object-cover object-center grayscale hover:grayscale-0 transition-all duration-500 max-h-[380px]"
+                className="rounded-xl object-cover object-center transition-all duration-500 max-h-[380px]"
                 unoptimized
               />
             </div>

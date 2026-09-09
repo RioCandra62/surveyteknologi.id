@@ -10,8 +10,8 @@ interface Partner {
 
 const partners: Partner[] = [
   { name: "Antam", logo: "/assets/image/partner_logo/antam.png" },
-  { name: "PLN ES", logo: "/assets/image/partner_logo/plnes.png" },
-  { name: "Vale", logo: "/assets/image/partner_logo/vale.png" },
+  // { name: "PLN ES", logo: "/assets/image/partner_logo/plnes.png" },
+  // { name: "Vale", logo: "/assets/image/partner_logo/vale.png" },
   { name: "Surveyor Indonesia", logo: "/assets/image/partner_logo/si.png" },
   {
     name: "Bintang Raya Inti Bumi",
@@ -39,6 +39,35 @@ export default function OurPartnerMarquee() {
         <p className="mt-4 text-sm md:text-base text-gray-400 light:text-slate-600 max-w-xl mx-auto leading-relaxed">
           {t("partner.subtitle")}
         </p>
+
+        <div className="flex flex-row items-center justify-center gap-8 md:gap-16 w-full mt-10 px-4">
+          <div className="relative w-40 h-20 flex items-center justify-center">
+            <Image
+              src="/assets/image/bruder.png"
+              alt="Bruder"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div className="relative w-40 h-20 flex items-center justify-center">
+            <Image
+              src="/assets/image/plnes.png"
+              alt="PLN"
+              fill
+              unoptimized
+              className="object-contain"
+            />
+          </div>
+          <div className="relative w-40 h-20 flex items-center justify-center">
+            <Image
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFU9Thbp-_CimAu0brAednhqUEIay3bSWtraXE6vdAmQ&s=10"
+              alt="Partner"
+              fill
+              unoptimized
+              className="object-contain"
+            />
+          </div>
+        </div>
 
         {/* Marquee Wrapper with fading edges */}
         <div className="mt-16 overflow-hidden relative w-full py-4">
